@@ -1,0 +1,39 @@
+version: '3'
+
+x-app: &default-config
+  env_file:
+    - '.env'
+  restart: '${DOCKER_RESTART_POLICY:-unless-stopped}'
+  stop_grace_period: '3s'
+  tty: true
+  healthcheck:
+    interval: '60s'
+    timeout: '3s'
+    start_period: '5s'
+    retries: 3
+
+services:
+  client:
+    <<: *default-config
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: client
+    ports:
+      - '${CLIENT_PORT:-5173}:${CLIENT_PORT:-5173}'
+    volumes:
+      - './client:/usr/src/app:delegated'
+      - /usr/src/app/node_modules
+  backend:
+    <<: *default-config
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: server
+    ports:
+      - '${SERVER_PORT:-3000}:${SERVER_PORT:-3000}'
+    volumes:
+      - './server:/usr/src/app:delegated'
+      - /usr/src/app/node_modules
