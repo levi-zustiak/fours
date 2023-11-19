@@ -7,8 +7,9 @@ import { render } from 'solid-js/web';
 
 createInertiaApp({
   resolve: async (name: string) => {
-    const pages = await import.meta.glob<InertiaComponent>('./Pages/**/*.tsx', {
+    const pages = import.meta.glob<InertiaComponent>('./Pages/**/*.tsx', {
       import: 'default',
+      eager: true,
     });
 
     const page = pages[`./Pages/${name}.tsx`];
