@@ -1,0 +1,19 @@
+.primary {
+  color: var(--secondary-main);
+}
+
+.secondary {
+  color: var(--primary-main);
+}
+
+.small {
+  transform: scale(0.75);
+}
+
+.medium {
+  transform: scale(1);
+}
+
+.large {
+  transform: scale(1.5);
+}

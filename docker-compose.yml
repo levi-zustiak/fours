@@ -25,7 +25,7 @@ services:
     volumes:
       - './client:/usr/src/app:delegated'
       - /usr/src/app/node_modules
-  backend:
+  server:
     <<: *default-config
     container_name: server
     build:

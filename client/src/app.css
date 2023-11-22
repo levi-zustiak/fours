@@ -1,0 +1,57 @@
+:root {
+  --primary-main: #fff;
+  --secondary-main: #222;
+  --secondary-light: #2e2e2e;
+  --background-main: #fffbf2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  background-color: #fffbf2;
+  color: #222222;
+  font-family: 'Poppins';
+  height: 100%;
+  width: 100%;
+}
+
+body::before {
+  background: url('http://localhost:5173/src/assets/noise.svg');
+  position: fixed;
+  left: 0;
+  top: 0;
+  content: '';
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  opacity: 25%;
+  pointer-events: none;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 900;
+}
+
+h2 {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+h3 {
+  font-size: 2.5rem;
+}
+
+a {
+  color: var(--secondary-main);
+}
+
+a:visited {
+  color: var(--secondary-main);
+  text-decoration: none;
+}

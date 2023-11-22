@@ -17,6 +17,8 @@ export class InertiaInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
 
+    res.vary('X-Inertia');
+
     if (req.header('X-Inertia')) {
       res.header('X-Inertia', 'true').type('json');
     } else {
@@ -62,4 +64,27 @@ export class InertiaInterceptor implements NestInterceptor {
     </html>
     `;
   }
+
+  // private toHtml(page) {
+  //   return `
+  //   <!DOCTYPE html>
+  //   <html lang="en">
+  //     <head>
+  //       <meta charset="utf-8" />
+  //       <meta
+  //         name="viewport"
+  //         content="width=device-width, initial-scale=1.0,
+  //         maximum-scale=1.0"
+  //       />
+  //       <title>Fours</title>
+
+  //       <link rel="stylesheet" href="http://localhost:3000/build/assets/app-sU_7rSjT.css">
+  //       <script type="module" src="http://localhost:3000/build/assets/app-dPBXl3T1.js"></script>
+  //     </head>
+  //     <body>
+  //       <div id="app" data-page=${JSON.stringify(page)}></div>
+  //     </body>
+  //   </html>
+  //   `;
+  // }
 }

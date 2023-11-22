@@ -1,0 +1,38 @@
+.container {
+  grid-area: nav;
+  box-sizing: border-box;
+  height: 100vh;
+  background-color: var(--secondary-main);
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  position: relative;
+  transform: translateX(calc(-100% - 30px));
+}
+
+.toggleButton {
+  padding: 4px;
+  transition: all 250ms ease-in-out;
+  position: absolute;
+  top: 128px;
+  right: 0;
+  transform: translateX(50%);
+  background-color: var(--primary-main);
+  border: 2px solid var(--secondary-main);
+}
+
+.toggleIcon {
+  transform-origin: center;
+  height: 18px;
+  width: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--secondary-main);
+}
+
+.linkContainer {
+  margin-top: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

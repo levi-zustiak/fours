@@ -1,0 +1,32 @@
+.button {
+  height: 48px;
+  border: 2px solid var(--secondary-main);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--primary-main);
+  background-color: var(--secondary-main);
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 150ms ease-in-out;
+}
+
+.text {
+}
+
+.outlined {
+  background-color: transparent;
+  color: var(--secondary-main);
+}
+
+.outlined:hover {
+  background-color: var(--secondary-main);
+  color: var(--primary-main);
+}
+
+.filled {
+}
+
+.filled:hover {
+  background-color: var(--secondary-light);
+}
