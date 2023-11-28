@@ -1,11 +1,12 @@
+import { router } from 'inertia-solid';
 import { io } from 'socket.io-client';
 import { createContext, useContext } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { createStore, reconcile } from 'solid-js/store';
 
 type GameContext = {
-  wait: () => void;
-  unwait: () => void;
   state: Game;
+  join: (gameId: string) => void;
+  unwait: () => void;
 };
 
 const GameContext = createContext<GameContext>();
@@ -15,11 +16,17 @@ type User = {
   name: string;
 };
 
+type Player = User;
+
 type Game = {
   id: string | null;
   host: User | null;
   peer: User | null;
   stage: string;
+  board?: any;
+  players: Record<string, Player>;
+  currentPlayer: string;
+  moveList: number[];
 };
 
 const GameProvider = (props: any) => {
@@ -32,20 +39,48 @@ const GameProvider = (props: any) => {
     stage: 'waiting',
   });
 
-  const wait = () => {
-    socket.once('game:start', (data) => {
-      console.log(data);
-    });
-  };
-
   const unwait = () => {
     socket.off('game:start');
   };
 
+  const join = (gameId: string) => {
+    socket.emit('join', { gameId }, ({ game }: { game: any }) => {
+      setState(game);
+    });
+
+    socket.once('game:start', ({ game }: { game: any }) => {
+      console.log('game:start', game);
+      setState(game);
+      router.get(`/play/${game.id}`);
+    });
+  };
+
+  const init = (initialState: any) => {
+    setState(initialState);
+
+    socket.on('game:update', ({ game }) => {
+      console.log('game:update', game);
+      setState(reconcile(game));
+    });
+  };
+
+  const play = (col: number) => {
+    console.log(col);
+    socket.emit('UPDATE', { gameId: state.id, col }, (payload: any) =>
+      console.log(payload),
+    );
+  };
+
+  const value = {
+    state,
+    unwait,
+    join,
+    init,
+    play,
+  };
+
   return (
-    <GameContext.Provider value={{ wait, unwait, state }}>
-      {props.children}
-    </GameContext.Provider>
+    <GameContext.Provider value={value}>{props.children}</GameContext.Provider>
   );
 };
 

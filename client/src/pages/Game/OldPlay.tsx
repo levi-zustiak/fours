@@ -1,10 +1,11 @@
 import { Card } from '@components/Card';
+import { Icon } from '@components/Icon';
 import { router } from 'inertia-solid';
 import { AnimatedContainer } from '@components/AnimatedContainer';
 import { Motion } from '@motionone/solid';
-import { Icon } from '@components/Icon';
 
-export default function Home() {
+export default function Play({ game }) {
+  console.log(game);
   return (
     <AnimatedContainer>
       <Motion.h1
@@ -15,7 +16,7 @@ export default function Home() {
           easing: [0.6, -0.05, 0.01, 0.99],
         }}
       >
-        Home
+        Play
       </Motion.h1>
       <Motion.div
         style={{ display: 'flex', gap: '1rem' }}
@@ -27,18 +28,6 @@ export default function Home() {
           easing: [0.6, -0.05, 0.01, 0.99],
         }}
       >
-        {/* <Card
-          title="Play"
-          message="Play a game with a friend"
-          onClick={() => router.get('/play')}
-          slots={{ icon: <Joystick /> }}
-        />
-        <Card
-          title="Join"
-          message="Join an existing game"
-          onClick={() => router.get('/join')}
-          slots={{ icon: <UserPlus /> }}
-        /> */}
         <Card
           title="Create"
           message="Play a game with a friend"

@@ -1,18 +1,17 @@
-// import { Lobby } from '@/types/lobby.types';
 import { Link } from 'inertia-solid';
 import { onCleanup, onMount } from 'solid-js';
-// import { useLobby } from '@contexts/LobbyContext';
 import { AnimatedContainer } from '@components/AnimatedContainer';
 import { animate, stagger } from 'motion';
 import { Button } from '@components/Button';
 import { useGame } from '@/contexts/GameContext';
 
 type Props = {
-  lobby: any;
+  game: any;
+  user: any;
 };
 
-export default function Create({ game }: Props) {
-  const { wait, unwait } = useGame();
+export default function Wait({ game }: Props) {
+  const { join, unwait } = useGame();
 
   const copyLink = () =>
     navigator.clipboard.writeText(
@@ -21,7 +20,7 @@ export default function Create({ game }: Props) {
     );
 
   onMount(() => {
-    wait();
+    join(game.id);
 
     animate(
       '.token',
@@ -120,11 +119,7 @@ export default function Create({ game }: Props) {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '1rem', 'margin-top': '2rem' }}>
-          <Link
-            href={`/lobby/delete/${game.id}`}
-            method="delete"
-            style={{ width: '100%' }}
-          >
+          <Link href={`/${game.id}`} method="delete" style={{ width: '100%' }}>
             <Button variant="outlined" style={{ width: '100%' }}>
               Cancel
             </Button>
