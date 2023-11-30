@@ -1,4 +1,4 @@
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { P } from '@pixi/renderer';
 import { JSXElement, onMount, splitProps } from 'solid-js';
 import { TEXTURES } from '@constants/game';

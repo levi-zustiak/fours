@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@motionone/solid": "^10.16.4",
-    "gsap": "^3.12.2",
+    "gsap": "^3.12.3",
     "inertia-solid": "^0.1.1",
     "lucide-solid": "^0.292.0",
     "motion": "^10.16.4",

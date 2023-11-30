@@ -24,6 +24,8 @@ export class GameService {
   public join(client: Socket, { gameId }: { gameId: string }) {
     const game = this.games.get(gameId);
 
+    console.log(gameId, game);
+
     if (!game) {
       this.logger.log('Failed to find game');
       return;
@@ -45,7 +47,7 @@ export class GameService {
 
     client.join(game.id);
 
-    if (game.host && game.peer) {
+    if (game.stage === 'waiting') {
       game.init();
 
       this.eventEmitter.emit('game:start', { game });
@@ -86,5 +88,9 @@ export class GameService {
 
   public connect(client) {
     this.logger.log(`Client ${client.id} connected`);
+  }
+
+  public disconnect(client) {
+    this.logger.log(`Client ${client.id} disconnected`);
   }
 }

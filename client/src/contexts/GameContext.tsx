@@ -1,12 +1,11 @@
 import { router } from 'inertia-solid';
 import { io } from 'socket.io-client';
-import { createContext, useContext } from 'solid-js';
+import { createContext, createEffect, onMount, useContext } from 'solid-js';
 import { createStore, reconcile } from 'solid-js/store';
 
 type GameContext = {
   state: Game;
-  join: (gameId: string) => void;
-  unwait: () => void;
+  play: (col: number) => void;
 };
 
 const GameContext = createContext<GameContext>();
@@ -30,52 +29,41 @@ type Game = {
 };
 
 const GameProvider = (props: any) => {
-  const socket = io('http://localhost:3000/game');
+  const socket = io('http://localhost:3000/games');
 
-  const [state, setState] = createStore({
-    id: null,
-    host: null,
-    peer: null,
-    stage: 'waiting',
-  });
+  const [state, setState] = createStore(props.initialState);
 
-  const unwait = () => {
-    socket.off('game:start');
+  const handleStart = ({ game }: any) => {
+    setState(game);
+
+    socket.on('game:update', handleUpdate);
   };
 
-  const join = (gameId: string) => {
-    socket.emit('join', { gameId }, ({ game }: { game: any }) => {
-      setState(game);
-    });
-
-    socket.once('game:start', ({ game }: { game: any }) => {
-      console.log('game:start', game);
-      setState(game);
-      router.get(`/play/${game.id}`);
-    });
+  const handleUpdate = ({ game }: any) => {
+    setState(reconcile(game));
   };
 
-  const init = (initialState: any) => {
-    setState(initialState);
+  const init = () => {
+    socket.emit('join', { gameId: state.id }, ({ game }: any) =>
+      setState(game),
+    );
 
-    socket.on('game:update', ({ game }) => {
-      console.log('game:update', game);
-      setState(reconcile(game));
-    });
+    socket.once('game:start', handleStart);
   };
 
   const play = (col: number) => {
-    console.log(col);
-    socket.emit('UPDATE', { gameId: state.id, col }, (payload: any) =>
-      console.log(payload),
-    );
+    // use callback for errors/validations
+    socket.emit('UPDATE', { gameId: state.id, col });
   };
+
+  onMount(() => {
+    if (state.id) {
+      init();
+    }
+  });
 
   const value = {
     state,
-    unwait,
-    join,
-    init,
     play,
   };
 

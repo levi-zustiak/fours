@@ -1,11 +1,27 @@
 import { Board } from '@components/game/Board';
-import { useGame } from '@contexts/GameContext';
-import { onMount } from 'solid-js';
+import { GameProvider, useGame } from '@contexts/GameContext';
+import { Match, Switch, createEffect, onMount } from 'solid-js';
 
-export default function Play({ game }) {
-  const { state, init } = useGame();
+function Test() {
+  const { state } = useGame();
 
-  onMount(() => init(game));
+  return (
+    <Switch fallback={<p>Loading...</p>}>
+      <Match when={state.stage === 'waiting'}>
+        <p>Waiting...</p>
+      </Match>
+      <Match when={state.stage === 'playing'}>
+        <Board />
+      </Match>
+    </Switch>
+  );
+}
 
-  return <Board />;
+export default function Play(props) {
+  console.log(props.game);
+  return (
+    <GameProvider initialState={props.game}>
+      <Test />
+    </GameProvider>
+  );
 }

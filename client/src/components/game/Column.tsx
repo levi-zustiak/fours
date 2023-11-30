@@ -11,19 +11,14 @@ export function Column(props: any) {
     <P.Sprite
       {...props}
       texture={TEXTURES.COLUMN}
-      interactive
+      eventMode="static"
       cursor="pointer"
       pointerdown={() => play(props.index)}
     >
       <For each={props.state}>
-        {(token, index) => (
+        {(token) => (
           <Show when={token}>
-            <Token
-              {...token}
-              // texture={
-              //   index() % 2 === 0 ? TEXTURES.RED_TOKEN : TEXTURES.YELLOW_TOKEN
-              // }
-            />
+            <Token {...token} />
           </Show>
         )}
       </For>

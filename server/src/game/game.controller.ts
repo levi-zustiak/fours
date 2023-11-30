@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
 import { GameService } from './game.service';
 
-@Controller()
+@Controller('game')
 export class GameController {
   constructor(protected gameSvc: GameService) {}
 
@@ -9,7 +9,7 @@ export class GameController {
   getCreate(@Res() res) {
     const game = this.gameSvc.create();
 
-    res.redirect(303, `/wait/${game.id}`);
+    res.redirect(303, `/game/${game.id}`);
   }
 
   @Get('/join')
@@ -21,27 +21,12 @@ export class GameController {
   }
 
   @Post('/join/:id')
-  joinById(@Param() params, @Res() res) {
-    // const game = this.gameSvc.join(params.id);
-    // res.redirect(303, `/${game.id}`);
+  joinById(@Param('id') gameId, @Res() res) {
+    res.redirect(303, `/game/${gameId}`);
   }
 
-  @Get('/wait/:id')
+  @Get('/:id')
   wait(@Param('id') gameId: string) {
-    const game = this.gameSvc.get(gameId);
-
-    // If game is not full and user is not the host, join the lobby
-
-    return {
-      component: 'Game/Wait',
-      props: {
-        game,
-      },
-    };
-  }
-
-  @Get('/play/:id')
-  getPlay(@Param('id') gameId: string) {
     const game = this.gameSvc.get(gameId);
 
     return {
@@ -51,11 +36,4 @@ export class GameController {
       },
     };
   }
-
-  // @Delete('/:id')
-  // deleteGame(@Param() params, @Res() res) {
-  //   this.gameSvc.delete(params.id);
-
-  //   res.redirect(303, '/');
-  // }
 }

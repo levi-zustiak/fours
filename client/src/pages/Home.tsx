@@ -3,6 +3,7 @@ import { router } from 'inertia-solid';
 import { AnimatedContainer } from '@components/AnimatedContainer';
 import { Motion } from '@motionone/solid';
 import { Icon } from '@components/Icon';
+import { io } from 'socket.io-client';
 
 export default function Home() {
   return (
@@ -42,13 +43,13 @@ export default function Home() {
         <Card
           title="Create"
           message="Play a game with a friend"
-          onClick={() => router.get('/create')}
+          onClick={() => router.get('/game/create')}
           slots={{ icon: <Icon name="PlusSquare" /> }}
         />
         <Card
           title="Join"
           message="Join a existing game"
-          onClick={() => router.get('/join')}
+          onClick={() => router.get('/game/join')}
           slots={{ icon: <Icon name="UserPlus" /> }}
         />
       </Motion.div>

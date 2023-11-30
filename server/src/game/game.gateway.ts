@@ -2,6 +2,7 @@ import {
   ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
+  OnGatewayDisconnect,
   OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
@@ -11,8 +12,10 @@ import { GameService } from './game.service';
 import { Server, Socket } from 'socket.io';
 import { OnEvent } from '@nestjs/event-emitter';
 
-@WebSocketGateway({ namespace: 'game' })
-export class GameGateway implements OnGatewayInit, OnGatewayConnection {
+@WebSocketGateway({ namespace: 'games' })
+export class GameGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer() server: Server;
 
   constructor(private readonly gameSvc: GameService) {}
@@ -45,5 +48,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection {
 
   public handleConnection(@ConnectedSocket() client) {
     return this.gameSvc.connect(client);
+  }
+
+  public handleDisconnect(@ConnectedSocket() client) {
+    return this.gameSvc.disconnect(client);
   }
 }

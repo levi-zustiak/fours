@@ -6,7 +6,6 @@ import { AnimatedContainer } from '@components/AnimatedContainer';
 import { useGame } from '@contexts/GameContext';
 
 export default function Join({ gameId }: { gameId: string | undefined }) {
-  const { wait, unwait } = useGame();
   const [value, setValue] = createSignal<string | undefined>(gameId);
 
   const handleChange = ({ currentTarget }) => {
@@ -19,17 +18,9 @@ export default function Join({ gameId }: { gameId: string | undefined }) {
     e.preventDefault();
 
     if (!!value()) {
-      wait(value());
-
       router.post(`/game/join/${value()}`);
     }
   };
-
-  onCleanup(() => {
-    if (value()) {
-      unwait();
-    }
-  });
 
   return (
     <AnimatedContainer>
