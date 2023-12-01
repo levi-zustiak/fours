@@ -24,25 +24,17 @@ export class GameService {
   public join(client: Socket, { gameId }: { gameId: string }) {
     const game = this.games.get(gameId);
 
-    console.log(gameId, game);
-
     if (!game) {
       this.logger.log('Failed to find game');
       return;
     }
 
     if (game.host && !game.peer) {
-      game.setPeer({
-        id: 2,
-        name: 'Dylan',
-      });
+      game.setPeer(client.data.user);
     }
 
     if (!game.host) {
-      game.setHost({
-        id: 1,
-        name: 'Levi',
-      });
+      game.setHost(client.data.user);
     }
 
     client.join(game.id);

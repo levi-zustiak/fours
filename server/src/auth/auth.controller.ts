@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
-  HttpStatus,
   Post,
   Request,
   UseGuards,
@@ -25,24 +23,24 @@ export class AuthController {
     };
   }
 
-  @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Response() res): Promise<void> {
     const token = await this.authService.login(req.user);
 
-    res
-      .cookie('access_token', token, {
-        sameSite: 'lax',
-        httpOnly: true,
-      })
-      .type('json')
-      .send({ access_token: token });
+    res.cookie('access_token', token, {
+      sameSite: 'lax',
+      httpOnly: true,
+    });
+
+    res.redirect(303, req.session.intended || '/');
   }
 
   @Get('logout')
   async logout(@Request() req, @Response() res): Promise<void> {
-    res.clearCookie('access_token').send();
+    res.clearCookie('access_token');
+
+    res.redirect(303, '/');
   }
 
   @Post('signup')
@@ -53,6 +51,11 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+    return {
+      component: 'Auth/Profile',
+      props: {
+        user: req.user,
+      },
+    };
   }
 }

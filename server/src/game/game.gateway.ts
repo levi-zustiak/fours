@@ -11,6 +11,8 @@ import {
 import { GameService } from './game.service';
 import { Server, Socket } from 'socket.io';
 import { OnEvent } from '@nestjs/event-emitter';
+import { UseGuards } from '@nestjs/common';
+import { WsAuthGuard } from 'src/auth/guards/ws-auth.guard';
 
 @WebSocketGateway({ namespace: 'games' })
 export class GameGateway
@@ -20,6 +22,7 @@ export class GameGateway
 
   constructor(private readonly gameSvc: GameService) {}
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('join')
   join(@ConnectedSocket() client: Socket, @MessageBody() data) {
     const game = this.gameSvc.join(client, data);

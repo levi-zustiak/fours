@@ -18,7 +18,6 @@ function Test() {
 }
 
 export default function Play(props) {
-  console.log(props.game);
   return (
     <GameProvider initialState={props.game}>
       <Test />
