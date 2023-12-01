@@ -1,0 +1,29 @@
+.container {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.label {
+    font-family: "IBM Plex Mono";
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.input {
+    height: 48px;
+    width: 320px;
+    border: none;
+    outline: 2px solid var(--secondary-main);
+    padding: 12px;
+    font-size: 1rem;
+    font-family: "IBM Plex Mono";
+    font-weight: 500;
+    background-color: transparent;
+    border-radius: 8px;
+    margin: 8px 0;
+    transition: outline 100ms ease-in-out;
+}
+
+.input:active, .input:focus-within {
+    outline-width: 4px;
+}

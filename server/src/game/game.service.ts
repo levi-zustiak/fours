@@ -47,7 +47,7 @@ export class GameService {
 
     client.join(game.id);
 
-    if (game.stage === 'waiting') {
+    if (game.host && game.peer && game.stage === 'waiting') {
       game.init();
 
       this.eventEmitter.emit('game:start', { game });

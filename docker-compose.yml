@@ -32,8 +32,29 @@ services:
       context: ./server
       dockerfile: Dockerfile
     image: server
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - '${SERVER_PORT:-3000}:${SERVER_PORT:-3000}'
     volumes:
       - './server:/usr/src/app:delegated'
       - /usr/src/app/node_modules
+    depends_on:
+      - postgres
+
+  postgres:
+    <<: *default-config
+    container_name: fours-db
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}'
+    volumes:
+      - fours-db:/var/lib/postresql/data
+
+volumes:
+  fours-db:

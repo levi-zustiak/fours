@@ -1,4 +1,3 @@
-import { InitializeOnPreviewAllowlist } from '@nestjs/core';
 import { v4 } from 'uuid';
 
 type Player = any;
@@ -22,7 +21,7 @@ export class Game {
   public stage: STAGE;
   public players: Record<string, Player>;
   public board: any;
-  public currentPlayer: string;
+  public currentPlayer: number;
   public moveList: Array<Token>;
 
   constructor() {
@@ -41,12 +40,14 @@ export class Game {
   }
 
   init() {
-    const first = crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
+    this.currentPlayer =
+      crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
 
-    this.players = {
-      [this.host.id]: { ...this.host, playingAs: first ? 'p1' : 'p2' },
-      [this.peer.id]: { ...this.peer, playingAs: first ? 'p2' : 'p1' },
-    };
+    // Possibly change playingAs to just be 0/1 instead of p1/p2
+    this.players = [
+      { ...this.host, playingAs: this.currentPlayer ? 'p1' : 'p2' },
+      { ...this.peer, playingAs: this.currentPlayer ? 'p2' : 'p1' },
+    ];
 
     this.board = [
       [null, null, null, null, null, null],
@@ -57,7 +58,6 @@ export class Game {
       [null, null, null, null, null, null],
       [null, null, null, null, null, null],
     ];
-    this.currentPlayer = first ? this.host.id : this.peer.id;
     this.stage = STAGE.PLAYING;
     this.moveList = [];
   }
@@ -78,7 +78,6 @@ export class Game {
     board[col][row] = token;
     this.moveList.push(token);
 
-    console.log(board);
     this.board = board;
 
     if (this.checkWin()) {
@@ -148,12 +147,6 @@ export class Game {
   // }
 
   switchPlayer() {
-    this.currentPlayer = Object.keys(this.players).find(
-      (id) => id !== this.currentPlayer,
-    );
-  }
-
-  copyBoard() {
-    return this.board.map((column) => [...column]);
+    this.currentPlayer = 1 - this.currentPlayer;
   }
 }

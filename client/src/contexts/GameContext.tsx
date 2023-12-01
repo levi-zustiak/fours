@@ -1,6 +1,5 @@
-import { router } from 'inertia-solid';
 import { io } from 'socket.io-client';
-import { createContext, createEffect, onMount, useContext } from 'solid-js';
+import { createContext, onMount, useContext } from 'solid-js';
 import { createStore, reconcile } from 'solid-js/store';
 
 type GameContext = {
@@ -53,7 +52,7 @@ const GameProvider = (props: any) => {
 
   const play = (col: number) => {
     // use callback for errors/validations
-    socket.emit('UPDATE', { gameId: state.id, col });
+    socket.emit('game:update', { gameId: state.id, col });
   };
 
   onMount(() => {

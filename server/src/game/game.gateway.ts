@@ -28,7 +28,7 @@ export class GameGateway
     return { game };
   }
 
-  @SubscribeMessage('UPDATE')
+  @SubscribeMessage('game:update')
   handleUpdate(@ConnectedSocket() client: Socket, @MessageBody() data) {
     const game = this.gameSvc.update(data);
 
