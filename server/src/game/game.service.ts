@@ -48,12 +48,10 @@ export class GameService {
     return game;
   }
 
-  public update({ gameId, col }) {
+  public update(player, { gameId, col }) {
     const game = this.games.get(gameId);
 
-    game.update(col);
-
-    console.log(game);
+    game.update(player, col);
 
     return game;
   }

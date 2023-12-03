@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { v4 } from 'uuid';
 
 type Player = any;
@@ -23,6 +24,7 @@ export class Game {
   public board: any;
   public currentPlayer: number;
   public moveList: Array<Token>;
+  private logger = new Logger('Game');
 
   constructor() {
     this.id = v4();
@@ -62,10 +64,10 @@ export class Game {
     this.moveList = [];
   }
 
-  update(col) {
-    // if (!this.validate(userId)) {
-    //   return;
-    // }
+  update(user: Player, col: number) {
+    if (!this.validate(user)) {
+      return;
+    }
 
     const board = structuredClone(this.board);
     const row = board[col].indexOf(null);
@@ -101,8 +103,13 @@ export class Game {
     }
   }
 
-  validate(userId) {
-    if (userId !== this.currentPlayer) {
+  validate(player: Player) {
+    this.logger.log(
+      'player validating',
+      player,
+      this.players[this.currentPlayer],
+    );
+    if (player.id !== this.players[this.currentPlayer].id) {
       return false;
     }
 
@@ -133,18 +140,6 @@ export class Game {
   checkTie() {
     return false;
   }
-
-  // getcurrentPlayer() {
-  //   return this.players.find(
-  //     (player) => player.position === this.state.currentplayer
-  //   );
-  // }
-
-  // getWaitingPlayer() {
-  //   return this.players.find(
-  //     (player) => player.position !== this.state.currentPlayer
-  //   );
-  // }
 
   switchPlayer() {
     this.currentPlayer = 1 - this.currentPlayer;

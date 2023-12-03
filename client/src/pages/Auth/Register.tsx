@@ -35,7 +35,7 @@ export default function Register() {
           <div class={styles.fields}>
             <TextField
               label="Username"
-              name="username"
+              name="name"
               value={values().name}
               onChange={handleChange}
             />

@@ -6,6 +6,7 @@ import {
   Request,
   UseGuards,
   Response,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -54,9 +55,11 @@ export class AuthController {
 
   @Post('/register')
   register(@Response() res, @Body() registerDto: Record<string, any>) {
-    this.authService.signUp(registerDto);
+    const user = this.authService.signUp(registerDto);
 
-    res.redirect(303, '/login');
+    if (user) {
+      res.redirect(303, '/login');
+    }
   }
 
   @UseGuards(JwtAuthGuard)

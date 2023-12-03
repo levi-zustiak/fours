@@ -31,17 +31,18 @@ export class GameGateway
     return { game };
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('game:update')
   handleUpdate(@ConnectedSocket() client: Socket, @MessageBody() data) {
-    const game = this.gameSvc.update(data);
+    const game = this.gameSvc.update(client.data.user, data);
 
     this.server.to(game.id).emit('game:update', { game });
   }
 
   @OnEvent('game:start')
   handleGameStart(payload) {
-    console.log(payload);
     const { game } = payload;
+
     this.server.to(game.id).emit('game:start', { game });
   }
 
