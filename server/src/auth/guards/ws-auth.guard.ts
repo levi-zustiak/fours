@@ -17,7 +17,11 @@ export class WsAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const socket = context.switchToWs().getClient();
 
-    const token = cookie.parse(socket.handshake.headers.cookie)['access_token'];
+    let token: string;
+
+    if (socket.handshake.headers.cookie) {
+      token = cookie.parse(socket.handshake.headers.cookie)['access_token'];
+    }
 
     if (!token) {
       this.logger.error('No authorization token provided');

@@ -36,6 +36,7 @@ export class AuthService {
   }
 
   async signUp(data): Promise<void> {
+    console.log(data);
     await this.userService.create(data);
   }
 }

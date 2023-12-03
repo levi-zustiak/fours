@@ -22,6 +22,7 @@ export default function Login() {
 
   const submit = (e) => {
     e.preventDefault();
+    console.log(values());
     router.post('/login', values());
   };
 
@@ -50,7 +51,7 @@ export default function Login() {
         </form>
         <div style={{ display: 'flex', gap: '4px', 'margin-top': '2rem' }}>
           <p>Don't have an account?</p>
-          <Link href="/register">Sign up</Link>
+          <Link href="/register">Register</Link>
         </div>
       </div>
     </AnimatedContainer>

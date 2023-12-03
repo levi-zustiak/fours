@@ -15,6 +15,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // TODO: Prevent access to this page if user is already logged in
   @Get('/login')
   getLogin() {
     return {
@@ -24,7 +25,7 @@ export class AuthController {
   }
 
   @UseGuards(LocalAuthGuard)
-  @Post('login')
+  @Post('/login')
   async login(@Request() req, @Response() res): Promise<void> {
     const token = await this.authService.login(req.user);
 
@@ -36,20 +37,30 @@ export class AuthController {
     res.redirect(303, req.session.intended || '/');
   }
 
-  @Get('logout')
-  async logout(@Request() req, @Response() res): Promise<void> {
+  @Get('/logout')
+  logout(@Response() res): void {
     res.clearCookie('access_token');
 
     res.redirect(303, '/');
   }
 
-  @Post('signup')
-  signUp(@Body() signUpDto: Record<string, any>) {
-    return this.authService.signUp(signUpDto);
+  @Get('/register')
+  getRegister() {
+    return {
+      component: 'Auth/Register',
+      props: {},
+    };
+  }
+
+  @Post('/register')
+  register(@Response() res, @Body() registerDto: Record<string, any>) {
+    this.authService.signUp(registerDto);
+
+    res.redirect(303, '/login');
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
+  @Get('/profile')
   getProfile(@Request() req) {
     return {
       component: 'Auth/Profile',
