@@ -24,7 +24,11 @@ export class GameController {
 
   @Post('/join/:id')
   joinById(@Param('id') gameId, @Res() res) {
-    res.redirect(303, `/game/${gameId}`);
+    const game = this.gameSvc.get(gameId);
+
+    if (game) {
+      res.redirect(303, `/game/${game.id}`);
+    }
   }
 
   @Get('/:id')
