@@ -4,7 +4,9 @@
   --primary-main: #fff;
   --secondary-main: #222;
   --secondary-light: #2e2e2e;
-  --background-main: #fffbf2;
+  --background-main: #2e2e2e;
+  --yellow-main: #ffdb96;
+  --red-main: #f66d76;
 }
 
 * {
@@ -15,8 +17,8 @@
 
 body,
 html {
-  background-color: #fffbf2;
-  color: #222222;
+  background-color: var(--background-main);
+  color: var(--secondary-main);
   font-family: 'Poppins';
   height: 100%;
   width: 100%;
@@ -56,4 +58,9 @@ a {
 a:visited {
   color: var(--secondary-main);
   text-decoration: none;
+}
+
+.home-divider:hover {
+  /* height: 60vh; */
+  flex-grow: 3;
 }

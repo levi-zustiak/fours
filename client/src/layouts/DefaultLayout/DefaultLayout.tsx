@@ -13,27 +13,27 @@ export function DefaultLayout(props: { children: JSXElement }) {
   onMount(() => {
     timeline(
       [
-        [initialText, { fillOpacity: 1 }, { delay: 1, duration: 0.75 }],
-        [initialText, { opacity: 0 }],
-        [
-          initialContainer,
-          { width: 0 },
-          { duration: 0.75, easing: [0.87, 0, 0.13, 1], at: '<' },
-        ],
+        // [initialText, { fillOpacity: 1 }, { delay: 1, duration: 0.75 }],
+        // [initialText, { opacity: 0 }],
+        // [
+        //   initialContainer,
+        //   { width: 0 },
+        //   { duration: 0.75, easing: [0.87, 0, 0.13, 1], at: '<' },
+        // ],
         [navigation, { transform: 'translateX(0)' }],
-        [
-          account,
-          { opacity: [0, 1], right: '64px', transform: 'translateX(0)' },
-          { at: '<' },
-        ],
-        [main, { y: [150, 0], opacity: [0, 1] }, { at: '<' }],
+        // [
+        //   account,
+        //   { opacity: [0, 1], right: '64px', transform: 'translateX(0)' },
+        //   { at: '<' },
+        // ],
+        // [main, { y: [150, 0], opacity: [0, 1] }, { at: '<' }],
       ],
       { defaultOptions: { duration: 1, easing: [0.25, 1, 0.5, 1] } },
     );
   });
   return (
     <div class={styles.container}>
-      <Motion.div ref={initialContainer} class={styles.wipe}>
+      {/* <Motion.div ref={initialContainer} class={styles.wipe}>
         <Presence>
           <Show when={!animated()}>
             <svg ref={initialText} class={styles.text}>
@@ -48,9 +48,8 @@ export function DefaultLayout(props: { children: JSXElement }) {
             </svg>
           </Show>
         </Presence>
-      </Motion.div>
-      <SideNavigation ref={navigation} />
-      <div
+      </Motion.div> */}
+      {/* <div
         ref={account}
         style={{
           position: 'fixed',
@@ -60,12 +59,13 @@ export function DefaultLayout(props: { children: JSXElement }) {
           display: 'flex',
           gap: '2rem',
         }}
-      >
-        {/* <Profile /> */}
-      </div>
+      > */}
+      {/* <Profile /> */}
+      {/* </div> */}
       <main ref={main} class={styles.main}>
         {props.children}
       </main>
+      <SideNavigation ref={navigation} />
     </div>
   );
 }

@@ -32,7 +32,7 @@ type Props = {
   href: string;
   icon: string;
   show: boolean;
-  label: string;
+  children: any;
 };
 
 export function NavItem(props: Props) {
@@ -57,7 +57,7 @@ export function NavItem(props: Props) {
         <Presence exitBeforeEnter>
           <Show when={props.show}>
             <Motion.h4 {...textAnimations} class={styles.label}>
-              {props.label}
+              {props.children}
             </Motion.h4>
           </Show>
         </Presence>

@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { v4 } from 'uuid';
 
 type Player = any;
@@ -11,9 +10,16 @@ enum STAGE {
 }
 
 type Token = {
-  playedBy: any;
-  coords: any;
+  playedBy: Player;
+  coords: Coords;
 };
+
+type Coords = {
+  row: number;
+  col: number;
+};
+
+type Cell = any;
 
 export class Game {
   public id: string;
@@ -24,7 +30,6 @@ export class Game {
   public board: any;
   public currentPlayer: number;
   public moveList: Array<Token>;
-  private logger = new Logger('Game');
 
   constructor() {
     this.id = v4();
@@ -47,8 +52,8 @@ export class Game {
 
     // Possibly change playingAs to just be 0/1 instead of p1/p2
     this.players = [
-      { ...this.host, playingAs: this.currentPlayer ? 'p1' : 'p2' },
-      { ...this.peer, playingAs: this.currentPlayer ? 'p2' : 'p1' },
+      { ...this.host, playingAs: this.currentPlayer ? 'p2' : 'p1' },
+      { ...this.peer, playingAs: this.currentPlayer ? 'p1' : 'p2' },
     ];
 
     this.board = [
@@ -73,8 +78,9 @@ export class Game {
     const row = board[col].indexOf(null);
 
     const token = {
-      playedBy: this.players[this.currentPlayer],
+      playedBy: this.currentPlayer,
       coords: { row, col },
+      winningToken: false,
     };
 
     board[col][row] = token;
@@ -104,16 +110,10 @@ export class Game {
   }
 
   validate(player: Player) {
-    this.logger.log(
-      'player validating',
-      player,
-      this.players[this.currentPlayer],
+    return (
+      player.id === this.players[this.currentPlayer].id &&
+      this.stage === STAGE.PLAYING
     );
-    if (player.id !== this.players[this.currentPlayer].id) {
-      return false;
-    }
-
-    return true;
   }
 
   checkWin() {
@@ -125,20 +125,98 @@ export class Game {
     );
   }
 
-  checkVertical() {
-    return false;
+  private checkVertical(): boolean {
+    const { row, col } = this.moveList.at(-1).coords;
+    const minRow = this.min(row);
+
+    if (row < 3) return false;
+
+    const segment = this.board[col].slice(minRow, row + 1);
+
+    if (this.checkArray(segment)) {
+      segment.forEach((token) => (token.winningToken = true));
+      return true;
+    } else {
+      return false;
+    }
   }
-  checkHorizontal() {
-    return false;
+
+  private checkHorizontal(): boolean {
+    const { row, col } = this.moveList.at(-1).coords;
+    const minCol = this.min(col);
+    const maxCol = this.max(col, 6) + 1;
+
+    for (
+      let lowerBound = minCol, upperBound = minCol + 4;
+      upperBound <= maxCol;
+      lowerBound++, upperBound++
+    ) {
+      const segment = this.board
+        .slice(lowerBound, upperBound)
+        .map((col) => col[row]);
+
+      if (this.checkArray(segment)) {
+        segment.forEach((token) => (token.winningToken = true));
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
-  checkLeftDiagonal() {
-    return false;
+
+  private checkRightDiagonal(): boolean {
+    for (let col = 0; col <= 3; col++) {
+      for (let row = 0; row < 4; row++) {
+        const segment = [
+          this.board[col][row],
+          this.board[col + 1][row + 1],
+          this.board[col + 2][row + 2],
+          this.board[col + 3][row + 3],
+        ];
+
+        if (this.checkArray(segment)) {
+          segment.forEach((token) => (token.winningToken = true));
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
   }
-  checkRightDiagonal() {
-    return false;
+
+  private checkLeftDiagonal(): boolean {
+    for (let col = 3; col <= 6; col++) {
+      for (let row = 0; row < 4; row++) {
+        const segment = [
+          this.board[col][row],
+          this.board[col - 1][row + 1],
+          this.board[col - 2][row - 2],
+          this.board[col - 3][row - 3],
+        ];
+        if (this.checkArray(segment)) {
+          segment.forEach((token) => (token.winningToken = true));
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
   }
-  checkTie() {
-    return false;
+
+  private checkDraw(): boolean {
+    return !this.board.flat().some((cell) => cell === null);
+  }
+
+  private checkArray(arr: Cell[]): boolean {
+    return arr.every((token) => token && token.playedBy === arr[0].playedBy);
+  }
+
+  private min(num: number): number {
+    return Math.max(num - 3, 0);
+  }
+
+  private max(num: number, max: number): number {
+    return Math.min(num + 3, max) + 1;
   }
 
   switchPlayer() {

@@ -45,10 +45,21 @@ export function SideNavigation(props) {
       </div>
       {/* <Logo show={open()} /> */}
       <div class={styles.linkContainer}>
-        <NavItem href="/" icon="Home" show={open()} label="Home" />
-        {/* <NavItem href="/play" icon="Joystick" show={open()} label="Play" /> */}
-        <NavItem href="/login" icon="User" show={open()} label="Login" />
-        <NavItem href="/logout" icon="User" show={open()} label="Logout" />
+        <NavItem href="/" icon="Home" show={open()}>
+          Home
+        </NavItem>
+        <NavItem href="/game/create" icon="PlusSquare" show={open()}>
+          Create
+        </NavItem>
+        <NavItem href="/game/join" icon="Unplug" show={open()}>
+          Join
+        </NavItem>
+        <NavItem href="/login" icon="User" show={open()}>
+          Login
+        </NavItem>
+        <NavItem href="/logout" icon="User" show={open()}>
+          Logout
+        </NavItem>
       </div>
     </Motion.div>
   );

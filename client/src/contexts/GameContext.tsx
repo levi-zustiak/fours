@@ -39,6 +39,7 @@ const GameProvider = (props: any) => {
   };
 
   const handleUpdate = ({ game }: any) => {
+    console.log(game);
     setState(reconcile(game));
   };
 

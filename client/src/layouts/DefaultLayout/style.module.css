@@ -4,14 +4,12 @@
   display: grid;
   grid-template-columns: min-content 1fr;
   grid-template-areas: 'nav main';
-  gap: 2rem;
 }
 
 .main {
   grid-area: main;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .wipe {
