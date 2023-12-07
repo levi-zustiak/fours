@@ -2,11 +2,11 @@ import { Board } from '@components/game/Board';
 import { GameProvider, useGame } from '@contexts/GameContext';
 import { Match, Show, Switch } from 'solid-js';
 import { Motion } from '@motionone/solid';
+import styles from './style.module.css';
 
 function Waiting() {
   const { state } = useGame();
 
-  console.log(state);
   return (
     <div style={{ display: 'flex ' }}>
       <Show when={state.host}>
@@ -23,6 +23,7 @@ function Waiting() {
           transition={{ duration: 1, easing: [0.25, 1, 0.5, 1] }}
         >
           <h1>{state.host.name}</h1>
+          <h1 class={styles.backgroundText}>{state.host.name}</h1>
         </Motion.div>
       </Show>
       <Show when={state.peer}>
@@ -61,7 +62,7 @@ function Test() {
   );
 }
 
-export default function Play(props) {
+export function Page(props) {
   return (
     <GameProvider initialState={props.game}>
       <Test />

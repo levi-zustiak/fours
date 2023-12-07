@@ -1,14 +1,13 @@
-import styles from './style.module.css';
+import { Link, router } from 'inertia-solid';
 import { createSignal } from 'solid-js';
 import { Button } from '@components/Button';
-import { Link, router } from 'inertia-solid';
+import styles from './style.module.css';
 import { AnimatedContainer } from '@components/AnimatedContainer';
 import { TextField } from '@components/TextField';
 
-export default function Register() {
+export function Page() {
   const [values, setValues] = createSignal({
     name: '',
-    email: '',
     password: '',
   });
 
@@ -23,26 +22,20 @@ export default function Register() {
 
   const submit = (e) => {
     e.preventDefault();
-
-    router.post('/register', values());
+    console.log(values());
+    router.post('/login', values());
   };
 
   return (
     <AnimatedContainer>
       <div class={styles.container}>
-        <h2 style={{ 'margin-bottom': '2rem' }}>Register</h2>
+        <h2 style={{ 'margin-bottom': '2rem' }}>Login</h2>
         <form onSubmit={submit} class={styles.form}>
           <div class={styles.fields}>
             <TextField
               label="Username"
               name="name"
               value={values().name}
-              onChange={handleChange}
-            />
-            <TextField
-              label="Email"
-              name="email"
-              value={values().email}
               onChange={handleChange}
             />
             <TextField
@@ -57,8 +50,8 @@ export default function Register() {
           </Button>
         </form>
         <div style={{ display: 'flex', gap: '4px', 'margin-top': '2rem' }}>
-          <p>Already have an account?</p>
-          <Link href="/login">Sign in</Link>
+          <p>Don't have an account?</p>
+          <Link href="/register">Register</Link>
         </div>
       </div>
     </AnimatedContainer>

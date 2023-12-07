@@ -1,6 +1,6 @@
 import { PageAnimation } from '@components/PageAnimation';
 
-export default function Profile(props) {
+export function Page(props) {
   return (
     <PageAnimation>
       <h1>Profile</h1>

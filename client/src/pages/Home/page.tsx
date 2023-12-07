@@ -1,6 +1,6 @@
 import { Motion } from '@motionone/solid';
 
-export default function Home() {
+export function Page() {
   return (
     <>
       <Motion.div

@@ -9,17 +9,25 @@ import { DefaultLayout } from './layouts/DefaultLayout';
 import { GameProvider } from './contexts/GameContext';
 
 createInertiaApp({
-  resolve: async (name: string) => {
-    const pages = import.meta.glob<InertiaComponent>('./pages/**/*.tsx', {
-      import: 'default',
+  resolve: async (path: string) => {
+    const pages = import.meta.glob<InertiaComponent>('./pages/**/*/page.tsx', {
+      import: 'Page',
       eager: true,
     });
 
-    const page = pages[`./pages/${name}.tsx`];
+    const layouts = import.meta.glob('./pages/**/*/layout.tsx', {
+      import: 'Layout',
+      eager: true,
+    });
 
-    page.layout = [DefaultLayout];
+    console.log(layouts);
 
-    return page;
+    const Page = pages[`./pages/${path}/page.tsx`];
+    const Layout = layouts[`./pages/${path}/layout.tsx`];
+
+    Page.layout = [DefaultLayout, Layout];
+
+    return Page;
   },
   setup: ({ el, App, props }: SetupOptions) =>
     render(

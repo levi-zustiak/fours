@@ -1,11 +1,10 @@
 import { router } from 'inertia-solid';
-import { createSignal, onCleanup } from 'solid-js';
+import { createSignal } from 'solid-js';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { AnimatedContainer } from '@components/AnimatedContainer';
-import { useGame } from '@contexts/GameContext';
 
-export default function Join({ gameId }: { gameId: string | undefined }) {
+export function Page({ gameId }: { gameId: string | undefined }) {
   const [value, setValue] = createSignal<string | undefined>(gameId);
 
   const handleChange = ({ currentTarget }) => {
