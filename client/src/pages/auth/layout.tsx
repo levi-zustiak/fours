@@ -2,10 +2,11 @@ export function Layout(props) {
   return (
     <div
       style={{
-        height: '100vh',
-        width: '100vw',
+        height: '100%',
+        width: '100%',
         display: 'flex',
         'flex-direction': 'column',
+        border: '4px solid blue',
       }}
     >
       {props.children}

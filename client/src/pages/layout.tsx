@@ -5,7 +5,7 @@ import { SideNavigation } from '@components/SideNavigation';
 import { Motion, Presence } from '@motionone/solid';
 import { timeline } from 'motion';
 
-export function DefaultLayout(props: { children: JSXElement }) {
+export function Layout(props: { children: JSXElement }) {
   let initialContainer, initialText, navigation, account, main;
 
   const [animated, setAnimated] = createSignal(false);

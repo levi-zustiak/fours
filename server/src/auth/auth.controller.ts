@@ -20,7 +20,7 @@ export class AuthController {
   @Get('/login')
   getLogin() {
     return {
-      component: 'Auth/Login',
+      component: '/auth/login',
       props: {},
     };
   }
@@ -48,7 +48,7 @@ export class AuthController {
   @Get('/register')
   getRegister() {
     return {
-      component: 'Auth/Register',
+      component: '/auth/register',
       props: {},
     };
   }
@@ -66,7 +66,7 @@ export class AuthController {
   @Get('/profile')
   getProfile(@Request() req) {
     return {
-      component: 'Auth/Profile',
+      component: '/auth/profile',
       props: {
         user: req.user,
       },

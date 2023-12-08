@@ -5,29 +5,36 @@ import {
 } from 'inertia-solid';
 import { render } from 'solid-js/web';
 import './app.css';
-import { DefaultLayout } from './layouts/DefaultLayout';
 import { GameProvider } from './contexts/GameContext';
 
 createInertiaApp({
   resolve: async (path: string) => {
-    const pages = import.meta.glob<InertiaComponent>('./pages/**/*/page.tsx', {
+    const pages = import.meta.glob<InertiaComponent>('./pages/**/*page.tsx', {
       import: 'Page',
       eager: true,
     });
 
-    const layouts = import.meta.glob('./pages/**/*/layout.tsx', {
-      import: 'Layout',
-      eager: true,
-    });
+    const layouts = Object.entries(
+      import.meta.glob('./pages/**/*layout.tsx', {
+        import: 'Layout',
+        eager: true,
+      }),
+    )
+      .filter(([file]) => {
+        const pattern = /\.\/pages|\/layout\.tsx/g;
+
+        return path.includes(file.replace(pattern, ''));
+      })
+      .sort(([keyA], [keyB]) => keyA.length - keyB.length)
+      .map(([file, layout]) => layout);
 
     console.log(layouts);
 
-    const Page = pages[`./pages/${path}/page.tsx`];
-    const Layout = layouts[`./pages/${path}/layout.tsx`];
+    const page = pages[`./pages${path}/page.tsx`];
 
-    Page.layout = [DefaultLayout, Layout];
+    page.layout = layouts;
 
-    return Page;
+    return page;
   },
   setup: ({ el, App, props }: SetupOptions) =>
     render(

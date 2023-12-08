@@ -17,7 +17,7 @@ export class GameController {
   @Get('/join')
   getJoin() {
     return {
-      component: 'Game/Join',
+      component: '/game/join',
       props: {},
     };
   }
@@ -36,7 +36,7 @@ export class GameController {
     const game = this.gameSvc.get(gameId);
 
     return {
-      component: 'Game/Play',
+      component: '/game/play',
       props: {
         game,
       },
