@@ -4,9 +4,11 @@
   --primary-main: #fff;
   --secondary-main: #222;
   --secondary-light: #2e2e2e;
-  --background-main: #2e2e2e;
+  --background-main: #fffbf2;
   --yellow-main: #ffdb96;
   --red-main: #f66d76;
+  --border-main: #222;
+  --text-primary-main: var(--secondary-main);
 }
 
 * {
@@ -38,7 +40,8 @@ body::before {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 6rem;
+  line-height: 6rem;
   font-weight: 900;
 }
 
@@ -53,6 +56,7 @@ h3 {
 
 a {
   color: var(--secondary-main);
+  text-decoration: none;
 }
 
 a:visited {

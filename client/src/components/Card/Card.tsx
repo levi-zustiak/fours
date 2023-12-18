@@ -1,23 +1,59 @@
-import { JSXElement, Show } from 'solid-js';
+import { Motion } from '@motionone/solid';
 import styles from './style.module.css';
 
-type Props = {
-  title: string;
-  message: string;
-  onClick: () => void;
-  slots?: {
-    icon?: JSXElement;
-  };
+type CardProps = {
+  children: any;
+  color?: 'red' | 'yellow';
+  static?: boolean;
+  style?: any;
 };
 
-export function Card(props: Props) {
+function Card(props: CardProps) {
+  const color = props.color || 'default';
+
   return (
-    <div class={styles.container} onClick={props.onClick}>
-      <Show when={props?.slots?.icon}>
-        <div class={styles.iconContainer}>{props.slots?.icon}</div>
-      </Show>
-      <h3 class={styles.title}>{props.title}</h3>
-      <p class={styles.message}>{props.message}</p>
+    <Motion.div
+      {...props}
+      classList={{
+        [styles.container]: true,
+        [styles[color]]: true,
+        [styles.static]: props.static,
+      }}
+    >
+      {props.children}
+    </Motion.div>
+  );
+}
+
+type HeadingProps = {
+  color?: 'red' | 'yellow';
+  children: any;
+};
+
+function Heading(props: HeadingProps) {
+  const color = props.color || 'default';
+  return (
+    <div
+      class={styles.heading}
+      classList={{
+        [styles.heading]: true,
+        [styles[color]]: true,
+      }}
+    >
+      {props.children}
     </div>
   );
 }
+
+type ContentProps = {
+  children: any;
+};
+
+function Content(props: ContentProps) {
+  return <div class={styles.content}>{props.children}</div>;
+}
+
+Card.Heading = Heading;
+Card.Content = Content;
+
+export { Card };

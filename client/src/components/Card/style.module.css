@@ -1,43 +1,62 @@
 .container {
-  padding: 1rem;
+  position: relative;
   background-color: var(--background-main);
-  border: 2px solid var(--secondary-main);
+  border: 2px solid var(--border-main);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  width: 300px;
-  transition: all 150ms ease-in-out;
-  font-family: 'IBM Plex Mono', Courier, monospace;
-  border-radius: 12px;
-  gap: 0.5rem;
+  transition: box-shadow 150ms ease-in-out;
 }
 
-.container:hover {
-  filter: drop-shadow(-4px 4px 0 #222);
-  transform: translate(4px, -4px);
+.default:is(:hover, .static) {
+  box-shadow:
+    12px 12px var(--secondary-main),
+    12px 12px 0 2px var(--border-main);
+}
+
+.container.red:is(:hover, .static) {
+  box-shadow:
+    12px 12px var(--red-main),
+    12px 12px 0 2px var(--border-main);
+}
+
+.container.yellow:is(:hover, .static) {
+  box-shadow:
+    12px 12px var(--yellow-main),
+    12px 12px 0 2px var(--border-main);
+}
+
+.container:not(.static):hover {
   cursor: pointer;
+  transform: translate(-12px, -12px);
 }
 
-.container:active {
-  filter: none;
-  transform: none;
+.container:not(.static):active {
+  box-shadow: none;
 }
 
-.title {
-  margin: 0;
-  margin-top: 1rem;
+.heading {
+  background-color: var(--secondary-main);
+  color: var(--primary-main);
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 2px solid var(--border-main);
 }
 
-.message {
-  margin: 0;
+.heading.red {
+  background-color: var(--red-main);
+  color: var(--secondary-main);
 }
 
-.iconContainer {
-  background-color: rgba(255, 212, 128, 1);
-  /*height: 48px;*/
-  /*width: 48px;*/
-  width: min-content;
-  padding: 8px;
-  border-radius: 50%;
+.heading.yellow {
+  background-color: var(--yellow-main);
+  color: var(--secondary-main);
+}
+
+.content {
+  padding: 2rem;
   display: grid;
   place-items: center;
+  flex: 1;
 }

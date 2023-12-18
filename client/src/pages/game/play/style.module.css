@@ -1,3 +1,29 @@
-.background-text {
+.heading {
+  position: relative;
+  color: var(--text-primary-main);
+}
+
+/* .heading::after {
+  content: 'Play';
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  -webkit-text-fill-color: var(--background-main);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  z-index: -1;
+} */
+
+.player_container {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 4rem;
+}
+
+#vs {
   color: red;
+  -webkit-text-fill-color: var(--background-main);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
