@@ -3,10 +3,9 @@ import { splitProps } from 'solid-js';
 
 type Props = {
   onClick: any;
-  type: any;
   children: any;
-  variant: 'filled' | 'outlined' | 'text';
-  style: any;
+  variant?: 'filled' | 'outlined' | 'text';
+  style?: any;
 };
 
 export function Button(props: Props) {

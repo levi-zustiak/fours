@@ -23,7 +23,6 @@ export function Board() {
   return (
     <div
       style={{
-        border: '1px solid red',
         height: '100vh',
         display: 'grid',
         'place-items': 'center',

@@ -8,14 +8,9 @@
 
 .main {
   grid-area: main;
-  border: 1px solid red;
   padding: 200px;
   /* display: flex; */
   /* flex-direction: column; */
-}
-
-.content {
-  border: 1px solid red;
 }
 
 .wipe {
