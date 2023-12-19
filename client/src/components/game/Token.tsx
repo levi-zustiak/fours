@@ -29,7 +29,6 @@ export function Token(props: any): JSXElement {
       <Show when={props.winningToken}>
         <P.Graphics
           lineStyle={[10, 'blue', 1]}
-          // beginFill="0xFEEB77"
           drawCircle={[
             128 / 2,
             720 - 24 - 112 / 2 - 112 * props.coords.row,

@@ -1,0 +1,35 @@
+.container {
+  grid-area: nav;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 12px;
+  background-color: var(--background-main);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.action {
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: grid;
+  place-items: center;
+  clip-path: circle(24px);
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--border-main);
+  z-index: 2;
+}

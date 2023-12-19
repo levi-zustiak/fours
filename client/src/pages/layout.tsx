@@ -4,6 +4,8 @@ import styles from './style.module.css';
 import { SideNavigation } from '@components/SideNavigation';
 import { Motion, Presence } from '@motionone/solid';
 import { timeline } from 'motion';
+import { Logo } from '@components/Logo';
+import { Navigation } from '@components/Navigation';
 
 export function Layout(props: { children: JSXElement }) {
   let initialContainer, initialText, navigation, account, main;
@@ -20,7 +22,7 @@ export function Layout(props: { children: JSXElement }) {
         //   { width: 0 },
         //   { duration: 0.75, easing: [0.87, 0, 0.13, 1], at: '<' },
         // ],
-        [navigation, { transform: 'translateX(0)' }],
+        // [navigation, { transform: 'translateX(0)' }],
         // [
         //   account,
         //   { opacity: [0, 1], right: '64px', transform: 'translateX(0)' },
@@ -62,10 +64,11 @@ export function Layout(props: { children: JSXElement }) {
       > */}
       {/* <Profile /> */}
       {/* </div> */}
+      <Navigation />
       <main ref={main} class={styles.main}>
         {props.children}
       </main>
-      <SideNavigation ref={navigation} />
+      {/* <SideNavigation ref={navigation} /> */}
     </div>
   );
 }
