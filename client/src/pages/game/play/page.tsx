@@ -32,7 +32,7 @@ function Waiting(props) {
         display: 'inline-block',
       }}
     >
-      <h1 style={{ display: 'flex' }}>
+      <h1 style={{ display: 'flex', 'user-select': 'none' }}>
         <div class="waiting">W</div>
         <div class="waiting">a</div>
         <div class="waiting">i</div>

@@ -1,4 +1,4 @@
-.container {
+/* .container {
   grid-area: nav;
   padding: 32px;
   display: flex;
@@ -32,4 +32,30 @@
   border-radius: 50%;
   border: 2px solid var(--border-main);
   z-index: 2;
+} */
+
+.container {
+  grid-area: nav;
+  padding: 48px;
+  display: flex;
+  z-index: 10;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  z-index: 2;
+  clip-path: url(#mask);
+}
+
+.action {
+  /* position: relative; */
+  height: 48px;
+  width: 48px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--border-main);
+  border-radius: 50%;
 }
