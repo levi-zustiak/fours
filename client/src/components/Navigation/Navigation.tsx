@@ -1,17 +1,10 @@
 import { Logo } from '@components/Logo';
 import styles from './style.module.css';
 import { Motion, Presence } from '@motionone/solid';
-import {
-  For,
-  Index,
-  Match,
-  Show,
-  Switch,
-  createEffect,
-  createSignal,
-} from 'solid-js';
+import { For, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { Menu, X, User, Settings, Bell, BellRing } from 'lucide-solid';
 import { stagger } from 'motion';
+import { PresenceList } from '@motionone/solid';
 
 const Token = (props) => {
   const calculateFinal = () => {
@@ -185,13 +178,15 @@ export function Navigation() {
               <Settings />
             </Motion.div>
 
-            <For each={tokens()}>
-              {(token, i) => (
-                <Show when={token}>
-                  <Token index={i()} color={token} />p
-                </Show>
-              )}
-            </For>
+            <PresenceList>
+              <For each={tokens()}>
+                {(token, i) => (
+                  <Show when={token}>
+                    <Token index={i()} color={token} />p
+                  </Show>
+                )}
+              </For>
+            </PresenceList>
           </Show>
         </div>
       </div>
