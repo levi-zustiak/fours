@@ -8,6 +8,8 @@ import { animate, stagger } from 'motion';
 import { Button } from '@components/Button';
 import { router } from 'inertia-solid';
 import { Properties } from 'solid-js/web';
+import gsap from 'gsap';
+import { useAnimation } from '@contexts/AnimationContext';
 
 function Waiting(props) {
   onMount(() => {
@@ -27,8 +29,6 @@ function Waiting(props) {
     <Motion.div
       ref={props.ref}
       style={{
-        position: 'absolute',
-        left: 'calc(50% + 128px)',
         display: 'inline-block',
       }}
     >
@@ -109,8 +109,26 @@ function Waiting(props) {
 
 function Lobby() {
   const { state } = useGame();
+  const { master, addToTimeline } = useAnimation();
+  const tl = () => gsap.timeline();
+
+  let items = [];
 
   let total = 0;
+
+  onMount(() => {
+    // function players() {
+    //   const tl = gsap.timeline();
+
+    //   tl.from(items, { y: 200, opacity: 0 });
+    // }
+
+    master.add(tl(), '>').addLabel('players');
+
+    console.log(master.getChildren());
+
+    // addToTimeline(tl, '>');
+  });
 
   const animateComponent = async (component, animation = {}) => {
     animate(component, animation, {
@@ -131,7 +149,7 @@ function Lobby() {
   return (
     <>
       <div
-        class={styles.player_container}
+        class={`${styles.waiting_container} skew`}
         style={{
           position: 'relative',
           height: '100%',
@@ -139,72 +157,75 @@ function Lobby() {
         }}
       >
         <h1 class={styles.heading}>Play</h1>
-        <Show when={state.host}>
-          <Card
-            ref={(ref) =>
-              animateComponent(ref, { y: ['200px', 0], opacity: [0, 1] })
-            }
-            color="red"
-            static
-            style={{
-              position: 'absolute',
-              right: 'calc(50% + 144px)',
-            }}
-          >
-            <Card.Content>
-              <h1>{state.host.name}</h1>
-            </Card.Content>
-          </Card>
-          <Motion.h1
-            id={styles.vs}
-            ref={(ref) =>
-              animateComponent(ref, {
-                y: ['200px', 0],
-                x: ['-50px', '-50%'],
-                opacity: [0, 1],
-              })
-            }
-          >
-            VS
-          </Motion.h1>
 
-          <Show
-            when={state.peer}
-            fallback={
-              <Waiting
-                ref={(ref) =>
-                  animateComponent(ref, { y: ['200px', 0], opacity: [0, 1] })
-                }
-              />
-            }
-          >
-            <Card
+        <Show when={state.host}>
+          <div class={styles.players}>
+            <div class={styles.player1}>
+              <Card
+                // ref={(ref) => items.push(ref)}
+                ref={(ref) => tl().from(ref, { y: 200, opacity: 0 })}
+                color="red"
+                static
+              >
+                <Card.Content>
+                  <h1>{state.host.name}</h1>
+                </Card.Content>
+              </Card>
+            </div>
+            <Motion.h1
+              id={styles.vs}
               ref={(ref) =>
-                animateComponent(ref, { y: ['200px', 0], opacity: [0, 1] })
+                animateComponent(ref, {
+                  y: ['200px', 0],
+                  opacity: [0, 1],
+                })
               }
-              color="yellow"
-              static
-              style={{
-                position: 'absolute',
-                left: 'calc(50% + 128px)',
-              }}
             >
-              <Card.Content>
-                <h1>{state.peer.name}</h1>
-              </Card.Content>
-            </Card>
-          </Show>
-          <Show when={state.stage === 'waiting'}>
-            <Presence exitBeforeEnter>
-              <Motion.div
-                class={styles.actions}
-                ref={(actions) =>
-                  animateComponent(actions, {
-                    y: ['200px', 0],
-                    x: ['-50px', '-50%'],
-                    opacity: [0, 1],
-                  })
+              VS
+            </Motion.h1>
+
+            <div class={styles.player2}>
+              <Show
+                when={state.peer}
+                fallback={
+                  <Waiting
+                    ref={(ref) =>
+                      animateComponent(ref, {
+                        y: ['200px', 0],
+                        opacity: [0, 1],
+                      })
+                    }
+                  />
                 }
+              >
+                <Card
+                  ref={(ref) =>
+                    animateComponent(ref, { y: ['200px', 0], opacity: [0, 1] })
+                  }
+                  color="yellow"
+                  static
+                >
+                  <Card.Content>
+                    <h1>{state.peer.name}</h1>
+                  </Card.Content>
+                </Card>
+              </Show>
+            </div>
+          </div>
+
+          <Presence>
+            <Show when={state.stage === 'waiting'}>
+              <Motion.div
+                ref={addTotal}
+                class={styles.actions}
+                initial={{ y: 200, opacity: 0, x: -50 }}
+                animate={{ x: '-50%', y: 0, opacity: 1 }}
+                exit={{ y: 200, opacity: 0 }}
+                transition={{
+                  delay: delay(0.2),
+                  duration: 1,
+                  easing: [0.6, -0.05, 0.01, 0.99],
+                }}
               >
                 <Button
                   variant="outlined"
@@ -217,8 +238,8 @@ function Lobby() {
                   Copy Id
                 </Button>
               </Motion.div>
-            </Presence>
-          </Show>
+            </Show>
+          </Presence>
         </Show>
       </div>
     </>

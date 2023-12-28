@@ -4,10 +4,9 @@ export function Layout(props) {
       style={{
         display: 'flex',
         'flex-direction': 'column',
-        // 'align-items': 'center',
         'justify-content': 'center',
         height: '100%',
-        transform: 'skew(-3deg, -3deg)',
+        // transform: 'skew(-2deg, -2deg)',
       }}
     >
       {props.children}

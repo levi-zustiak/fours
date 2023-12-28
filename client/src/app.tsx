@@ -6,6 +6,7 @@ import {
 import { render } from 'solid-js/web';
 import './app.css';
 import { GameProvider } from './contexts/GameContext';
+import { AnimationProvider } from '@contexts/AnimationContext';
 
 createInertiaApp({
   resolve: async (path: string) => {
@@ -28,8 +29,6 @@ createInertiaApp({
       .sort(([keyA], [keyB]) => keyA.length - keyB.length)
       .map(([file, layout]) => layout);
 
-    console.log(layouts);
-
     const page = pages[`./pages${path}/page.tsx`];
 
     page.layout = layouts;
@@ -39,9 +38,11 @@ createInertiaApp({
   setup: ({ el, App, props }: SetupOptions) =>
     render(
       () => (
-        <GameProvider>
-          <App {...props} />
-        </GameProvider>
+        <AnimationProvider>
+          <GameProvider>
+            <App {...props} />
+          </GameProvider>
+        </AnimationProvider>
       ),
       el,
     ),

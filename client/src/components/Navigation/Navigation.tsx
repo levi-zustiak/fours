@@ -135,10 +135,8 @@ export function Navigation() {
     }
   };
 
-  createEffect(() => console.log(tokens()));
-
   return (
-    <div class={styles.container}>
+    <nav class={styles.nav}>
       <Logo />
       <div
         onMouseLeave={() => {
@@ -199,6 +197,6 @@ export function Navigation() {
           </clipPath>
         </defs>
       </svg>
-    </div>
+    </nav>
   );
 }
