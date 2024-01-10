@@ -10,22 +10,10 @@ import {
 const AnimationContext = createContext();
 
 function AnimationProvider(props) {
-  const [sequence, setSequence] = createSignal([]);
-  const [options, setOptions] = createSignal({});
-  const master = gsap.timeline();
-
-  const addToTimeline = (tl, offset) => {
-    console.log(tl, offset);
-
-    if (offset) {
-      master.add(tl(), offset);
-    } else {
-      master.add(tl());
-    }
-  };
+  const tl = gsap.timeline();
 
   return (
-    <AnimationContext.Provider value={{ master, addToTimeline }}>
+    <AnimationContext.Provider value={{ tl }}>
       {props.children}
     </AnimationContext.Provider>
   );

@@ -1,5 +1,6 @@
 import { Motion } from '@motionone/solid';
 import styles from './style.module.css';
+import { GSAP } from '@packages/gsap';
 
 type CardProps = {
   children: any;
@@ -12,7 +13,7 @@ function Card(props: CardProps) {
   const color = props.color || 'default';
 
   return (
-    <Motion.div
+    <GSAP.div
       {...props}
       classList={{
         [styles.container]: true,
@@ -21,7 +22,7 @@ function Card(props: CardProps) {
       }}
     >
       {props.children}
-    </Motion.div>
+    </GSAP.div>
   );
 }
 

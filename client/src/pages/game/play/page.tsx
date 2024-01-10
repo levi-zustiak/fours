@@ -110,7 +110,10 @@ function Waiting(props) {
 function Lobby() {
   const { state } = useGame();
   const { master, addToTimeline } = useAnimation();
-  const tl = () => gsap.timeline();
+  // const tl = () => gsap.timeline();
+  const tl = gsap.timeline();
+
+  master.add(tl, '>');
 
   let items = [];
 
@@ -123,7 +126,7 @@ function Lobby() {
     //   tl.from(items, { y: 200, opacity: 0 });
     // }
 
-    master.add(tl(), '>').addLabel('players');
+    // master.add(tl(), '>');
 
     console.log(master.getChildren());
 
@@ -163,7 +166,7 @@ function Lobby() {
             <div class={styles.player1}>
               <Card
                 // ref={(ref) => items.push(ref)}
-                ref={(ref) => tl().from(ref, { y: 200, opacity: 0 })}
+                ref={(ref) => tl.from(ref, { y: 200, opacity: 0 })}
                 color="red"
                 static
               >
