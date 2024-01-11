@@ -4,7 +4,7 @@ import {
   createContext,
   useContext,
   batch,
-  FlowComponent,
+  JSXElement,
 } from 'solid-js';
 import { createSwitchTransition } from '@solid-primitives/transition-group';
 import { resolveFirst } from '@solid-primitives/refs';
@@ -16,33 +16,38 @@ export type PresenceContextState = {
 
 export const PresenceContext = createContext<PresenceContextState>();
 
-type PresenceProps = any;
-
-export function Presence(props: PresenceProps) {
+export function Presence(props) {
   const [mount, setMount] = createSignal(true);
 
   const state = { initial: props.initial ?? true, mount };
 
-  const resolver = resolveFirst(() => props.children);
-
   const render = (
     <PresenceContext.Provider value={state}>
-      {createSwitchTransition(resolver, {
-        appear: state.initial,
-        mode: props.exitBeforeEnter ? 'out-in' : 'parallel',
-        onEnter(_, done) {
-          batch(() => {
-            setMount(true);
-            done();
-          });
-        },
-        onExit(el, done) {
-          batch(() => {
-            setMount(false);
-            el.addEventListener('motioncomplete', done);
-          });
-        },
-      })}
+      {
+        createSwitchTransition(
+          resolveFirst(() => props.children),
+          {
+            appear: state.initial,
+            mode: props.exitBeforeEnter ? 'out-in' : 'parallel',
+            onEnter(_, done) {
+              batch(() => {
+                setMount(true);
+                done();
+              });
+            },
+            onExit(el, done) {
+              batch(() => {
+                setMount(false);
+                console.log('unmounting', el);
+                el.addEventListener('motioncomplete', () => {
+                  console.log('unmount');
+                  done();
+                });
+              });
+            },
+          },
+        ) as any as JSXElement
+      }
     </PresenceContext.Provider>
   );
 

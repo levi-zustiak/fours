@@ -10,10 +10,10 @@ import {
 const AnimationContext = createContext();
 
 function AnimationProvider(props) {
-  const tl = gsap.timeline();
+  const master = gsap.timeline({ autoRemoveChildren: true });
 
   return (
-    <AnimationContext.Provider value={{ tl }}>
+    <AnimationContext.Provider value={{ master }}>
       {props.children}
     </AnimationContext.Provider>
   );

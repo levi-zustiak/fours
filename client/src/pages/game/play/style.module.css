@@ -32,11 +32,6 @@
   gap: 4rem;
 }
 
-.player1 {
-  grid-area: player1;
-  justify-self: end;
-}
-
 .player2 {
   grid-area: player2;
   justify-self: start;
@@ -54,6 +49,7 @@
 
 .actions {
   position: absolute;
+  transform: translateX(-50%);
   background-color: var(--background-main);
   bottom: 10%;
   left: 50%;

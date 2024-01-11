@@ -10,31 +10,31 @@ import { useAnimation } from '@contexts/AnimationContext';
 import gsap from 'gsap';
 
 export function Layout(props: { children: JSXElement }) {
-  let initialContainer, initialText, navigation, account, main;
+  let container, text, navigation, account, main;
 
   const [animated, setAnimated] = createSignal(false);
 
-  const { master, addToTimeline } = useAnimation();
+  const { master } = useAnimation();
 
   onMount(() => {
     function intro() {
       const tl = gsap.timeline();
 
-      tl.to(initialText, { fillOpacity: 1 });
-      tl.to(initialText, { opacity: 0 });
-      tl.to(initialContainer, { width: 0 });
+      tl.to(text, { fillOpacity: 1 });
+      tl.to(text, { opacity: 0 });
+      tl.to(container, { width: 0 });
 
       return tl;
     }
 
-    master.add(intro()).addLabel('intro');
+    master.add(intro());
   });
   return (
     <div class={styles.container}>
-      <Motion.div ref={initialContainer} class={styles.wipe}>
+      <Motion.div ref={container} class={styles.wipe}>
         <Presence>
           <Show when={!animated()}>
-            <svg ref={initialText} class={styles.text}>
+            <svg ref={text} class={styles.text}>
               <text
                 x="50%"
                 y="50%"

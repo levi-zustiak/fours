@@ -5,7 +5,6 @@ import { GSAP } from '@packages/gsap';
 type CardProps = {
   children: any;
   color?: 'red' | 'yellow';
-  static?: boolean;
   style?: any;
 };
 
@@ -13,14 +12,8 @@ function Card(props: CardProps) {
   const color = props.color || 'default';
 
   return (
-    <GSAP.div
-      {...props}
-      classList={{
-        [styles.container]: true,
-        [styles[color]]: true,
-        [styles.static]: props.static,
-      }}
-    >
+    <GSAP.div {...props} class={styles.container}>
+      <div classList={{ [styles.background]: true, [styles[color]]: true }} />
       {props.children}
     </GSAP.div>
   );
@@ -48,10 +41,20 @@ function Heading(props: HeadingProps) {
 
 type ContentProps = {
   children: any;
+  static?: boolean;
 };
 
 function Content(props: ContentProps) {
-  return <div class={styles.content}>{props.children}</div>;
+  const stat = props.static || false;
+
+  return (
+    <GSAP.div
+      {...props}
+      classList={{ [styles.content]: true, [styles.static]: stat }}
+    >
+      {props.children}
+    </GSAP.div>
+  );
 }
 
 Card.Heading = Heading;

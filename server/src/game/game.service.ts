@@ -7,6 +7,7 @@ import { Socket } from 'socket.io';
 export class GameService {
   private logger: Logger = new Logger('GameService');
   public games = new Map();
+  private players = new Set();
 
   constructor(private eventEmitter: EventEmitter2) {}
 
@@ -21,32 +22,49 @@ export class GameService {
     return game;
   }
 
-  public join(client: Socket, { gameId }: { gameId: string }) {
-    const game = this.games.get(gameId);
+  public join(user, gameId) {
+    const game = this.get(gameId);
 
     if (!game) {
-      this.logger.log('Failed to find game');
-      return;
     }
 
-    if (game.host && !game.peer) {
-      game.setPeer(client.data.user);
-    }
+    game.addUser(user);
 
-    if (!game.host) {
-      game.setHost(client.data.user);
-    }
-
-    client.join(game.id);
-
-    if (game.host && game.peer && game.stage === 'waiting') {
+    if (game.players.length === 2 && game.stage === 'waiting') {
       game.init();
-
-      this.eventEmitter.emit('game:start', { game });
     }
+
+    console.log(game);
 
     return game;
   }
+
+  // public joinWSocket(client: Socket, { gameId }: { gameId: string }) {
+  //   const game = this.games.get(gameId);
+
+  //   if (!game) {
+  //     this.logger.log('Failed to find game');
+  //     return;
+  //   }
+
+  //   if (game.host && !game.peer) {
+  //     game.setPeer(client.data.user);
+  //   }
+
+  //   if (!game.host) {
+  //     game.setHost(client.data.user);
+  //   }
+
+  //   client.join(game.id);
+
+  //   if (game.host && game.peer && game.stage === 'waiting') {
+  //     game.init();
+
+  //     this.eventEmitter.emit('game:start', { game });
+  //   }
+
+  //   return game;
+  // }
 
   public update(player, { gameId, col }) {
     const game = this.games.get(gameId);

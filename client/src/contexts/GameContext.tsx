@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { createContext, onMount, useContext } from 'solid-js';
+import { createContext, createEffect, onMount, useContext } from 'solid-js';
 import { createStore, reconcile } from 'solid-js/store';
 
 type GameContext = {
@@ -32,11 +32,11 @@ const GameProvider = (props: any) => {
 
   const [state, setState] = createStore(props.initialState);
 
-  const handleStart = ({ game }: any) => {
-    setState(game);
+  // const handleStart = ({ game }: any) => {
+  //   setState(game);
 
-    socket.on('game:update', handleUpdate);
-  };
+  //   socket.on('game:update', handleUpdate);
+  // };
 
   const handleUpdate = ({ game }: any) => {
     console.log(game);
@@ -44,11 +44,9 @@ const GameProvider = (props: any) => {
   };
 
   const init = () => {
-    socket.emit('join', { gameId: state.id }, ({ game }: any) =>
-      setState(game),
-    );
+    socket.on('game:update', handleUpdate);
 
-    socket.once('game:start', handleStart);
+    socket.emit('join', { gameId: state.id });
   };
 
   const play = (col: number) => {

@@ -23,10 +23,11 @@ type Cell = any;
 
 export class Game {
   public id: string;
+  public players: Array<any>;
+  public spectators: Array<any>;
   public host: Player;
   public peer: Player;
   public stage: STAGE;
-  public players: Record<string, Player>;
   public board: any;
   public currentPlayer: number;
   public moveList: Array<Token>;
@@ -36,25 +37,30 @@ export class Game {
     this.host = null;
     this.peer = null;
     this.stage = STAGE.WAITING;
+    this.players = [];
+    this.spectators = [];
   }
 
-  setHost(player) {
-    this.host = player;
-  }
+  addUser(user) {
+    if (
+      this.players.some((player) => player.id === user.id) ||
+      this.spectators.some((player) => player.id === user.id)
+    )
+      return;
 
-  setPeer(player) {
-    this.peer = player;
+    const arr = this.players.length < 2 ? this.players : this.spectators;
+
+    arr.push(user);
   }
 
   init() {
     this.currentPlayer =
       crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
 
-    // Possibly change playingAs to just be 0/1 instead of p1/p2
-    this.players = [
-      { ...this.host, playingAs: this.currentPlayer ? 'p2' : 'p1' },
-      { ...this.peer, playingAs: this.currentPlayer ? 'p1' : 'p2' },
-    ];
+    this.players = this.players.map((player, i) => ({
+      ...player,
+      playingAs: this.currentPlayer === i ? 'p1' : 'p2',
+    }));
 
     this.board = [
       [null, null, null, null, null, null],

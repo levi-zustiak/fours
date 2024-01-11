@@ -1,15 +1,21 @@
 import { Board } from '@components/game/Board';
 import { GameProvider, useGame } from '@contexts/GameContext';
-import { Match, Show, Switch, onMount } from 'solid-js';
-import { Motion, Presence } from '@motionone/solid';
+import { Match, Show, Switch, createEffect, onMount } from 'solid-js';
+import { Motion } from '@motionone/solid';
 import styles from './style.module.css';
 import { Card } from '@components/Card';
 import { animate, stagger } from 'motion';
 import { Button } from '@components/Button';
 import { router } from 'inertia-solid';
-import { Properties } from 'solid-js/web';
-import gsap from 'gsap';
 import { useAnimation } from '@contexts/AnimationContext';
+import { GSAP } from '@packages/gsap';
+import { Presence } from '@packages/gsap/presence';
+import { gsap } from 'gsap';
+import CustomEase from 'gsap/CustomEase';
+
+CustomEase.create('custom', '0.6, -0.05, 0.01, 0.99');
+
+gsap.registerPlugin(CustomEase);
 
 function Waiting(props) {
   onMount(() => {
@@ -25,9 +31,10 @@ function Waiting(props) {
       },
     );
   });
+
   return (
-    <Motion.div
-      ref={props.ref}
+    <GSAP.div
+      {...props}
       style={{
         display: 'inline-block',
       }}
@@ -103,51 +110,15 @@ function Waiting(props) {
           />
         </svg>
       </div>
-    </Motion.div>
+    </GSAP.div>
   );
 }
 
 function Lobby() {
   const { state } = useGame();
-  const { master, addToTimeline } = useAnimation();
-  // const tl = () => gsap.timeline();
-  const tl = gsap.timeline();
+  const { master } = useAnimation();
 
-  master.add(tl, '>');
-
-  let items = [];
-
-  let total = 0;
-
-  onMount(() => {
-    // function players() {
-    //   const tl = gsap.timeline();
-
-    //   tl.from(items, { y: 200, opacity: 0 });
-    // }
-
-    // master.add(tl(), '>');
-
-    console.log(master.getChildren());
-
-    // addToTimeline(tl, '>');
-  });
-
-  const animateComponent = async (component, animation = {}) => {
-    animate(component, animation, {
-      delay: delay(0.2),
-      duration: 1,
-      easing: [0.6, -0.05, 0.01, 0.99],
-    }).finished.then(() => {
-      total--;
-    });
-
-    total++;
-  };
-
-  const delay = (delay = 0.1) => {
-    return delay * total;
-  };
+  createEffect(() => console.log(state));
 
   return (
     <>
@@ -161,74 +132,84 @@ function Lobby() {
       >
         <h1 class={styles.heading}>Play</h1>
 
-        <Show when={state.host}>
+        <Show when={state.players[0]}>
           <div class={styles.players}>
-            <div class={styles.player1}>
-              <Card
-                // ref={(ref) => items.push(ref)}
-                ref={(ref) => tl.from(ref, { y: 200, opacity: 0 })}
-                color="red"
-                static
-              >
-                <Card.Content>
-                  <h1>{state.host.name}</h1>
-                </Card.Content>
-              </Card>
-            </div>
-            <Motion.h1
+            <Card
+              timeline={master}
+              from={[
+                {
+                  y: 200,
+                  opacity: 0,
+                  duration: 1,
+                  delay: 0.5,
+                  ease: 'custom',
+                },
+                '>',
+              ]}
+              color="red"
+              style={{ 'grid-area': 'player1', 'justify-self': 'end' }}
+            >
+              <Card.Content static>
+                <h1>{state.players[0].name}</h1>
+              </Card.Content>
+            </Card>
+            <GSAP.h1
               id={styles.vs}
-              ref={(ref) =>
-                animateComponent(ref, {
-                  y: ['200px', 0],
-                  opacity: [0, 1],
-                })
-              }
+              timeline={master}
+              from={[
+                { y: 200, opacity: 0, duration: 1, ease: 'custom' },
+                '<0.2',
+              ]}
             >
               VS
-            </Motion.h1>
+            </GSAP.h1>
 
             <div class={styles.player2}>
+              {/* <Presence> */}
               <Show
-                when={state.peer}
+                when={state.players[1]}
                 fallback={
                   <Waiting
-                    ref={(ref) =>
-                      animateComponent(ref, {
-                        y: ['200px', 0],
-                        opacity: [0, 1],
-                      })
-                    }
+                    timeline={master}
+                    from={[
+                      { y: 200, opacity: 0, duration: 1, ease: 'custom' },
+                      '<0.2',
+                    ]}
                   />
                 }
               >
                 <Card
-                  ref={(ref) =>
-                    animateComponent(ref, { y: ['200px', 0], opacity: [0, 1] })
-                  }
+                  timeline={master}
+                  from={[
+                    {
+                      y: 200,
+                      opacity: 0,
+                      duration: 1,
+                      ease: 'custom',
+                    },
+                    '<0.2',
+                  ]}
                   color="yellow"
-                  static
                 >
-                  <Card.Content>
-                    <h1>{state.peer.name}</h1>
+                  <Card.Content static>
+                    <h1>{state.players[1].name}</h1>
                   </Card.Content>
                 </Card>
               </Show>
+              {/* </Presence> */}
             </div>
           </div>
 
           <Presence>
             <Show when={state.stage === 'waiting'}>
-              <Motion.div
-                ref={addTotal}
+              <GSAP.div
                 class={styles.actions}
-                initial={{ y: 200, opacity: 0, x: -50 }}
-                animate={{ x: '-50%', y: 0, opacity: 1 }}
-                exit={{ y: 200, opacity: 0 }}
-                transition={{
-                  delay: delay(0.2),
-                  duration: 1,
-                  easing: [0.6, -0.05, 0.01, 0.99],
-                }}
+                timeline={master}
+                from={[
+                  { y: 100, opacity: 0, duration: 1, ease: 'custom' },
+                  '<0.4',
+                ]}
+                exit={[{ y: 100, opacity: 0, duration: 1, ease: 'custom' }, 0]}
               >
                 <Button
                   variant="outlined"
@@ -240,7 +221,7 @@ function Lobby() {
                 <Button onClick={() => alert(state.id)} style={{ flex: 1 }}>
                   Copy Id
                 </Button>
-              </Motion.div>
+              </GSAP.div>
             </Show>
           </Presence>
         </Show>
@@ -253,15 +234,14 @@ function Test() {
   const { state } = useGame();
 
   return (
-    <Lobby />
-    // <Switch fallback={<p>Loading...</p>}>
-    //   <Match when={state.stage === 'waiting'}>
-    //     <Waiting />
-    //   </Match>
-    //   <Match when={state.stage === 'playing' || state.stage === 'ended'}>
-    //     <Board />
-    //   </Match>
-    // </Switch>
+    <Switch fallback={<p>Loading...</p>}>
+      <Match when={state.stage === 'waiting'}>
+        <Lobby />
+      </Match>
+      <Match when={state.stage === 'playing' || state.stage === 'ended'}>
+        <Board />
+      </Match>
+    </Switch>
   );
 }
 

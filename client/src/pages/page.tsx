@@ -14,12 +14,17 @@ export function Page() {
         <Link href="/game/create">
           <Card
             color="red"
-            hover={{ x: '-12px', y: '-12px' }}
-            press={{ x: 0, y: 0 }}
-            transition={{ duration: 0.15, easing: 'ease-in-out' }}
             style={{ display: 'grid', 'place-items': 'center' }}
           >
-            <Card.Content>
+            <Card.Content
+              hover={{
+                x: -12,
+                y: -12,
+                duration: 0.15,
+                easing: 'power1.inOut',
+              }}
+              press={{ x: 0, y: 0, duration: 0.5 }}
+            >
               <h1>Create</h1>
             </Card.Content>
           </Card>
@@ -27,12 +32,17 @@ export function Page() {
         <Link href="/game/join">
           <Card
             color="yellow"
-            hover={{ x: '-12px', y: '-12px' }}
-            press={{ x: 0, y: 0 }}
-            transition={{ duration: 0.15, easing: 'ease-in-out' }}
             style={{ display: 'grid', 'place-items': 'center' }}
           >
-            <Card.Content>
+            <Card.Content
+              hover={{
+                x: -12,
+                y: -12,
+                duration: 0.15,
+                easing: 'power1.inOut',
+              }}
+              press={{ x: 0, y: 0, duration: 0.5 }}
+            >
               <h1>Join</h1>
             </Card.Content>
           </Card>

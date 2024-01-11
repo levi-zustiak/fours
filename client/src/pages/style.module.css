@@ -19,7 +19,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: var(--secondary-main); */
+  background-color: var(--secondary-main);
 }
 
 .text {

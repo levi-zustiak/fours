@@ -25,10 +25,14 @@ export class GameGateway
   @UseGuards(WsAuthGuard)
   @SubscribeMessage('join')
   join(@ConnectedSocket() client: Socket, @MessageBody() data) {
-    const game = this.gameSvc.join(client, data);
-    console.log('Player connected');
+    // const game = this.gameSvc.joinWSocket(client, data);
+    const game = this.gameSvc.get(data.gameId);
 
-    return { game };
+    if (!game) return;
+
+    client.join(game.id);
+
+    this.server.to(game.id).emit('game:update', { game });
   }
 
   @UseGuards(WsAuthGuard)

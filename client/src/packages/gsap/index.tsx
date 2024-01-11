@@ -1,49 +1,97 @@
-import { JSXElement, createEffect, onCleanup, splitProps } from 'solid-js';
+import {
+  JSXElement,
+  createEffect,
+  onCleanup,
+  onMount,
+  splitProps,
+} from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { gsap } from 'gsap';
 import { usePresence } from './presence';
 
-const TWEEN_KEYS = ['from', 'to'] as const;
-const GESTURES = ['hover', 'press'] as const;
+type AnimationKeys = 'from' | 'to' | 'fromTo' | 'exit';
+type AnimationConfig = any;
 
-const ATTR_KEYS = ['tag'] as const;
+const TWEEN_KEYS = ['from', 'to', 'fromTo'] as const;
+const GESTURE_KEYS = ['hover', 'press'] as const;
+
+const LOCAL_KEYS = ['tag', 'exit', 'timeline', 'position'] as const;
 
 type GSAPComponentProps = any;
 
 function GSAPComponent(props: GSAPComponentProps) {
-  const [tweens, , attrs] = splitProps(props, TWEEN_KEYS, ATTR_KEYS);
+  const [tweens, gestures, local, attrs] = splitProps(
+    props,
+    TWEEN_KEYS,
+    GESTURE_KEYS,
+    LOCAL_KEYS,
+  );
 
   const presence = usePresence();
 
   let ref!: Element;
+  let events = {
+    hover: null,
+    press: null,
+  };
 
-  const animate = () => {
-    const parent = props.timeline ?? gsap;
+  const animate = (fn: AnimationKeys, config: AnimationConfig) => {
+    let parent = local.timeline ?? gsap;
+    let args = [ref];
 
-    if (tweens.from && tweens.to) {
-      parent.fromTo(ref, tweens.from, tweens.to);
-    } else {
-      const [fn, config] = Object.entries(tweens)[0];
+    Array.isArray(config) ? args.push(...config) : args.push(config);
 
-      parent[fn](ref, config);
-    }
+    console.log(parent, fn, args);
+
+    parent[fn].apply(null, args);
+  };
+
+  const enter = () => {
+    if (Object.keys(tweens).length === 0) return;
+
+    const [fn, config] = Object.entries(tweens)[0];
+
+    animate(fn, config);
   };
 
   const exit = () => {
-    if (presence && props.exit) {
-      gsap.to(ref, {
-        ...props.exit,
-        onComplete: () => ref.dispatchEvent(new Event('motioncomplete')),
-      });
+    console.log('exit');
+    const complete = () => ref.dispatchEvent(new Event('motioncomplete'));
+
+    if (presence && local.exit) {
+      Array.isArray(local.exit)
+        ? (local.exit[0].onComplete = complete)
+        : (local.exit.onComplete = complete);
+
+      // animate('to', local.exit);
+      gsap.to(ref, local.exit[0]);
+    } else {
+      // presence.mount(ref);
     }
+  };
+
+  const registerGestures = () => {
+    Object.keys(gestures).forEach((key) => {
+      events[key] = gsap.to(ref, { ...gestures[key], paused: true });
+    });
+  };
+
+  const gestureEvent = (key: 'hover' | 'press', fn: 'play' | 'reverse') => {
+    if (!events[key]) return;
+
+    events[key][fn]();
   };
 
   createEffect(() => {
     if (presence && !presence.mount()) return;
 
-    animate();
+    createEffect(() => enter());
 
     onCleanup(() => exit());
+  });
+
+  onMount(() => {
+    registerGestures();
   });
 
   return (
@@ -53,7 +101,11 @@ function GSAPComponent(props: GSAPComponentProps) {
         ref = el;
         props.ref?.(el);
       }}
-      component={props.tag || 'div'}
+      onMouseEnter={() => gestureEvent('hover', 'play')}
+      onMouseLeave={() => gestureEvent('hover', 'reverse')}
+      onMouseDown={() => gestureEvent('press', 'play')}
+      onMouseUp={() => gestureEvent('press', 'reverse')}
+      component={local.tag || 'div'}
     />
   );
 }

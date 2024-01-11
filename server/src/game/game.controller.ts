@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { GameService } from './game.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
@@ -32,8 +40,9 @@ export class GameController {
   }
 
   @Get('/:id')
-  wait(@Param('id') gameId: string) {
-    const game = this.gameSvc.get(gameId);
+  wait(@Req() req, @Param('id') gameId: string) {
+    // const game = this.gameSvc.get(gameId);
+    const game = this.gameSvc.join(req.user, gameId);
 
     return {
       component: '/game/play',
