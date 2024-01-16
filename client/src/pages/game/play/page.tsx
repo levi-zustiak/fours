@@ -1,7 +1,6 @@
 import { Board } from '@components/game/Board';
 import { GameProvider, useGame } from '@contexts/GameContext';
 import { Match, Show, Switch, createEffect, onMount } from 'solid-js';
-import { Motion } from '@motionone/solid';
 import styles from './style.module.css';
 import { Card } from '@components/Card';
 import { animate, stagger } from 'motion';
@@ -118,77 +117,76 @@ function Lobby() {
   const { state } = useGame();
   const { master } = useAnimation();
 
-  createEffect(() => console.log(state));
-
   return (
-    <>
-      <div
-        class={`${styles.waiting_container} skew`}
-        style={{
-          position: 'relative',
-          height: '100%',
-          width: '100%',
-        }}
-      >
-        <h1 class={styles.heading}>Play</h1>
+    <GSAP.div
+      timeline={master}
+      class={`${styles.lobby} skew`}
+      style={{
+        position: 'relative',
+        height: '100%',
+        width: '100%',
+      }}
+      exit={{ opacity: 0, duration: 1 }}
+    >
+      <h1 class={styles.heading}>Play</h1>
 
-        <Show when={state.players[0]}>
-          <div class={styles.players}>
-            <Card
-              timeline={master}
-              from={[
-                {
-                  y: 200,
-                  opacity: 0,
-                  duration: 1,
-                  delay: 0.5,
-                  ease: 'custom',
-                },
-                '>',
-              ]}
-              color="red"
-              style={{ 'grid-area': 'player1', 'justify-self': 'end' }}
-            >
-              <Card.Content static>
-                <h1>{state.players[0].name}</h1>
-              </Card.Content>
-            </Card>
-            <GSAP.h1
-              id={styles.vs}
-              timeline={master}
-              from={[
-                { y: 200, opacity: 0, duration: 1, ease: 'custom' },
-                '<0.2',
-              ]}
-            >
-              VS
-            </GSAP.h1>
+      <Show when={state.players[0]}>
+        <div class={styles.players}>
+          <Card
+            timeline={master}
+            from={{
+              y: 200,
+              opacity: 0,
+              duration: 1,
+              delay: 0.5,
+              ease: 'custom',
+            }}
+            color="red"
+            style={{ 'grid-area': 'player1', 'justify-self': 'end' }}
+          >
+            <Card.Content static>
+              <h1>{state.players[0].name}</h1>
+            </Card.Content>
+          </Card>
+          <GSAP.h1
+            id={styles.vs}
+            timeline={master}
+            from={{
+              y: 200,
+              opacity: 0,
+              duration: 1,
+              ease: 'custom',
+              at: '<0.2',
+            }}
+          >
+            VS
+          </GSAP.h1>
 
-            <div class={styles.player2}>
-              {/* <Presence> */}
-              <Show
-                when={state.players[1]}
-                fallback={
-                  <Waiting
-                    timeline={master}
-                    from={[
-                      { y: 200, opacity: 0, duration: 1, ease: 'custom' },
-                      '<0.2',
-                    ]}
-                  />
-                }
-              >
+          <div class={styles.player2}>
+            <Presence>
+              <Show when={!state.players[1]}>
+                <Waiting
+                  timeline={master}
+                  from={{
+                    y: 200,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'custom',
+                    at: '<0.2',
+                  }}
+                  exit={{ y: -100, opacity: 0, duration: 1, ease: 'custom' }}
+                />
+              </Show>
+              <Show when={state.players[1]}>
                 <Card
                   timeline={master}
-                  from={[
-                    {
-                      y: 200,
-                      opacity: 0,
-                      duration: 1,
-                      ease: 'custom',
-                    },
-                    '<0.2',
-                  ]}
+                  from={{
+                    y: 200,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'custom',
+                    at: '<0.2',
+                  }}
                   color="yellow"
                 >
                   <Card.Content static>
@@ -196,37 +194,39 @@ function Lobby() {
                   </Card.Content>
                 </Card>
               </Show>
-              {/* </Presence> */}
-            </div>
+            </Presence>
           </div>
+        </div>
 
-          <Presence>
-            <Show when={state.stage === 'waiting'}>
-              <GSAP.div
-                class={styles.actions}
-                timeline={master}
-                from={[
-                  { y: 100, opacity: 0, duration: 1, ease: 'custom' },
-                  '<0.4',
-                ]}
-                exit={[{ y: 100, opacity: 0, duration: 1, ease: 'custom' }, 0]}
+        <Presence>
+          <Show when={state.stage === 'waiting'}>
+            <GSAP.div
+              class={styles.actions}
+              timeline={master}
+              from={{
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                ease: 'custom',
+                at: '<0.4',
+              }}
+              exit={{ y: 100, opacity: 0, duration: 1, ease: 'custom' }}
+            >
+              <Button
+                variant="outlined"
+                onClick={() => router.get('/')}
+                style={{ flex: 1 }}
               >
-                <Button
-                  variant="outlined"
-                  onClick={() => router.get('/')}
-                  style={{ flex: 1 }}
-                >
-                  Leave
-                </Button>
-                <Button onClick={() => alert(state.id)} style={{ flex: 1 }}>
-                  Copy Id
-                </Button>
-              </GSAP.div>
-            </Show>
-          </Presence>
-        </Show>
-      </div>
-    </>
+                Leave
+              </Button>
+              <Button onClick={() => alert(state.id)} style={{ flex: 1 }}>
+                Copy Id
+              </Button>
+            </GSAP.div>
+          </Show>
+        </Presence>
+      </Show>
+    </GSAP.div>
   );
 }
 
@@ -234,14 +234,17 @@ function Test() {
   const { state } = useGame();
 
   return (
-    <Switch fallback={<p>Loading...</p>}>
-      <Match when={state.stage === 'waiting'}>
-        <Lobby />
-      </Match>
-      <Match when={state.stage === 'playing' || state.stage === 'ended'}>
-        <Board />
-      </Match>
-    </Switch>
+    // <Lobby />
+    <Presence>
+      <Switch fallback={<p>Loading...</p>}>
+        <Match when={state.stage === 'waiting'}>
+          <Lobby />
+        </Match>
+        <Match when={state.stage === 'playing' || state.stage === 'ended'}>
+          <Board />
+        </Match>
+      </Switch>
+    </Presence>
   );
 }
 

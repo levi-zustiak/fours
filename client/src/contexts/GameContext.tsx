@@ -38,10 +38,7 @@ const GameProvider = (props: any) => {
   //   socket.on('game:update', handleUpdate);
   // };
 
-  const handleUpdate = ({ game }: any) => {
-    console.log(game);
-    setState(reconcile(game));
-  };
+  const handleUpdate = ({ game }: any) => setState(reconcile(game));
 
   const init = () => {
     socket.on('game:update', handleUpdate);

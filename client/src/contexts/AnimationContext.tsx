@@ -10,7 +10,7 @@ import {
 const AnimationContext = createContext();
 
 function AnimationProvider(props) {
-  const master = gsap.timeline({ autoRemoveChildren: true });
+  const master = gsap.timeline();
 
   return (
     <AnimationContext.Provider value={{ master }}>

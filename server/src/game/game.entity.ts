@@ -63,8 +63,22 @@ export class Game {
     }));
 
     this.board = [
-      [null, null, null, null, null, null],
-      [null, null, null, null, null, null],
+      [
+        { playedBy: 0, coords: { row: 0, col: 0 }, winningToken: false },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
+      [
+        { playedBy: 1, coords: { col: 1, row: 0, winningToken: false } },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
       [null, null, null, null, null, null],
       [null, null, null, null, null, null],
       [null, null, null, null, null, null],

@@ -38,11 +38,7 @@ export function Presence(props) {
             onExit(el, done) {
               batch(() => {
                 setMount(false);
-                console.log('unmounting', el);
-                el.addEventListener('motioncomplete', () => {
-                  console.log('unmount');
-                  done();
-                });
+                el.addEventListener('motioncomplete', done);
               });
             },
           },

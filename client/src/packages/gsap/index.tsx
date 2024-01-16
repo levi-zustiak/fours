@@ -36,14 +36,11 @@ function GSAPComponent(props: GSAPComponentProps) {
   };
 
   const animate = (fn: AnimationKeys, config: AnimationConfig) => {
-    let parent = local.timeline ?? gsap;
-    let args = [ref];
+    if (!ref) return;
 
-    Array.isArray(config) ? args.push(...config) : args.push(config);
-
-    console.log(parent, fn, args);
-
-    parent[fn].apply(null, args);
+    local.timeline
+      ? local.timeline[fn](ref, config, config?.at)
+      : gsap[fn](ref, config);
   };
 
   const enter = () => {
@@ -63,10 +60,7 @@ function GSAPComponent(props: GSAPComponentProps) {
         ? (local.exit[0].onComplete = complete)
         : (local.exit.onComplete = complete);
 
-      // animate('to', local.exit);
-      gsap.to(ref, local.exit[0]);
-    } else {
-      // presence.mount(ref);
+      animate('to', local.exit);
     }
   };
 
