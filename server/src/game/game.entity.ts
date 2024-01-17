@@ -48,20 +48,18 @@ export class Game {
     )
       return;
 
-    const arr = this.players.length < 2 ? this.players : this.spectators;
-
-    arr.push(user);
+    // Have to add wins here since init will overwrite on each instance.
+    this.players.length < 2
+      ? this.players.push({ ...user, wins: 0 })
+      : this.spectators.push(user);
   }
 
   init() {
-    this.currentPlayer =
-      crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
+    const p1 = crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
 
-    this.players = this.players.map((player, i) => ({
-      ...player,
-      playingAs: this.currentPlayer === i ? 'p1' : 'p2',
-    }));
-
+    this.players[0].playingAs = p1;
+    this.players[1].playingAs = 1 - p1;
+    this.currentPlayer = 0;
     this.board = [
       [
         { playedBy: 0, coords: { row: 0, col: 0 }, winningToken: false },
@@ -110,22 +108,9 @@ export class Game {
 
     if (this.checkWin()) {
       this.stage = STAGE.ENDED;
-
-      return {
-        stage: this.stage,
-        board: this.board,
-        currentPlayer: this.currentPlayer,
-        moveList: this.moveList,
-        //return result to return winner id or tie
-      };
+      this.players[this.currentPlayer].wins += 1;
     } else {
       this.switchPlayer();
-
-      return {
-        board: this.board,
-        currentPlayer: this.currentPlayer,
-        moveList: this.moveList,
-      };
     }
   }
 

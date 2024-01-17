@@ -1,4 +1,4 @@
-import { Board } from '@components/game/Board';
+import { Board } from './components/Board';
 import { GameProvider, useGame } from '@contexts/GameContext';
 import { Match, Show, Switch, createEffect, onMount } from 'solid-js';
 import styles from './style.module.css';
@@ -11,6 +11,8 @@ import { GSAP } from '@packages/gsap';
 import { Presence } from '@packages/gsap/presence';
 import { gsap } from 'gsap';
 import CustomEase from 'gsap/CustomEase';
+import { Players } from './components/Players';
+import { Game } from './components/Game';
 
 CustomEase.create('custom', '0.6, -0.05, 0.01, 0.99');
 
@@ -241,7 +243,7 @@ function Test() {
           <Lobby />
         </Match>
         <Match when={state.stage === 'playing' || state.stage === 'ended'}>
-          <Board />
+          <Game />
         </Match>
       </Switch>
     </Presence>

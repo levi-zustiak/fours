@@ -39,33 +39,6 @@ export class GameService {
     return game;
   }
 
-  // public joinWSocket(client: Socket, { gameId }: { gameId: string }) {
-  //   const game = this.games.get(gameId);
-
-  //   if (!game) {
-  //     this.logger.log('Failed to find game');
-  //     return;
-  //   }
-
-  //   if (game.host && !game.peer) {
-  //     game.setPeer(client.data.user);
-  //   }
-
-  //   if (!game.host) {
-  //     game.setHost(client.data.user);
-  //   }
-
-  //   client.join(game.id);
-
-  //   if (game.host && game.peer && game.stage === 'waiting') {
-  //     game.init();
-
-  //     this.eventEmitter.emit('game:start', { game });
-  //   }
-
-  //   return game;
-  // }
-
   public update(player, { gameId, col }) {
     const game = this.games.get(gameId);
 
