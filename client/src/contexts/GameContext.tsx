@@ -1,10 +1,21 @@
 import { io } from 'socket.io-client';
-import { createContext, createEffect, onMount, useContext } from 'solid-js';
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  onMount,
+  useContext,
+} from 'solid-js';
 import { createStore, reconcile } from 'solid-js/store';
 
 type GameContext = {
   state: Game;
   play: (col: number) => void;
+};
+
+type Message = {
+  text: string;
+  from: User;
 };
 
 const GameContext = createContext<GameContext>();
@@ -31,24 +42,24 @@ const GameProvider = (props: any) => {
   const socket = io('http://localhost:3000/games');
 
   const [state, setState] = createStore(props.initialState);
-
-  // const handleStart = ({ game }: any) => {
-  //   setState(game);
-
-  //   socket.on('game:update', handleUpdate);
-  // };
+  const [chats, setChats] = createSignal<Array<Message>>([]);
 
   const handleUpdate = ({ game }: any) => setState(reconcile(game));
 
   const init = () => {
     socket.on('game:update', handleUpdate);
+    socket.on('game:chat', (chat) => setChats((prev) => [...prev, chat]));
 
-    socket.emit('join', { gameId: state.id });
+    socket.emit('game:join', { gameId: state.id });
   };
 
   const play = (col: number) => {
     // use callback for errors/validations
     socket.emit('game:update', { gameId: state.id, col });
+  };
+
+  const sendChat = (message: string) => {
+    socket.emit('game:chat', { gameId: state.id, message });
   };
 
   onMount(() => {
@@ -57,9 +68,13 @@ const GameProvider = (props: any) => {
     }
   });
 
+  createEffect(() => console.log(chats()));
+
   const value = {
     state,
     play,
+    chats,
+    sendChat,
   };
 
   return (

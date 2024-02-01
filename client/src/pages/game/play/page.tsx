@@ -166,7 +166,7 @@ function Lobby() {
 
           <div class={styles.player2}>
             <Presence>
-              <Show when={!state.players[1]}>
+              {/* <Show when={!state.players[1]}>
                 <Waiting
                   timeline={master}
                   from={{
@@ -178,8 +178,23 @@ function Lobby() {
                   }}
                   exit={{ y: -100, opacity: 0, duration: 1, ease: 'custom' }}
                 />
-              </Show>
-              <Show when={state.players[1]}>
+              </Show> */}
+              <Show
+                when={state.players[1]}
+                fallback={
+                  <Waiting
+                    timeline={master}
+                    from={{
+                      y: 200,
+                      opacity: 0,
+                      duration: 1,
+                      ease: 'custom',
+                      at: '<0.2',
+                    }}
+                    exit={{ y: -100, opacity: 0, duration: 1, ease: 'custom' }}
+                  />
+                }
+              >
                 <Card
                   timeline={master}
                   from={{
@@ -237,7 +252,7 @@ function Test() {
 
   return (
     // <Lobby />
-    <Presence>
+    <Presence exitBeforeEnter>
       <Switch fallback={<p>Loading...</p>}>
         <Match when={state.stage === 'waiting'}>
           <Lobby />

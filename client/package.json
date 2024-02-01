@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@motionone/solid": "https://github.com/levi-zustiak/motionone/releases/download/v0.0.1/motionone-solid-10.16.4.tgz",
+    "clsx": "^2.1.0",
     "gsap": "^3.12.3",
     "inertia-solid": "^0.1.1",
     "lucide-solid": "^0.292.0",

@@ -6,7 +6,9 @@
   --secondary-light: #2e2e2e;
   --background-main: #fffbf2;
   --yellow-main: #ffdb96;
+  --secondary-accent: #ffd179;
   --red-main: #f66d76;
+  --primary-accent: #f55761;
   --border-main: #222;
   --text-primary-main: var(--secondary-main);
 }

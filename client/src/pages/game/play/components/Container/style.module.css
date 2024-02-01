@@ -1,5 +1,5 @@
-.chat_container {
-  grid-area: chat;
+.container {
+  /* grid-area: chat; */
   border: 2px solid coral;
   width: 500px;
   display: flex;
@@ -17,12 +17,4 @@
   h3 {
     font-size: 18px;
   }
-}
-
-.messages {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
 }

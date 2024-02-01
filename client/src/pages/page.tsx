@@ -1,7 +1,8 @@
 import { Card } from '@components/Card';
 import { Link } from 'inertia-solid';
 
-export function Page() {
+export function Page(page) {
+  console.log(page);
   return (
     <div style={{ transform: 'skew(-3deg, -3deg)' }}>
       <h1>Home</h1>
