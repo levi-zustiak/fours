@@ -6,13 +6,13 @@
 }
 
 .sent {
-  color: var(--primary-main);
-  background-color: var(--secondary-main);
+  color: var(--text-inverse);
+  background-color: var(--black-main);
   align-self: flex-end;
 }
 
 .received {
   background-color: lightgray;
-  color: var(--secondary-main);
+  color: var(--text-main);
   align-self: flex-start;
 }

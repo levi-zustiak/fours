@@ -1,16 +1,21 @@
 @import 'fonts.css';
 
 :root {
-  --primary-main: #fff;
-  --secondary-main: #222;
-  --secondary-light: #2e2e2e;
+  --white-main: #fff;
+  --black-main: #181818;
+  --black-light: #2e2e2e;
   --background-main: #fffbf2;
+  --background-accent: #f5efe2;
+  --primary-main: #e4565f;
+  --primary-accent: #f55761;
   --yellow-main: #ffdb96;
+  --secondary-main: #f6c76d;
   --secondary-accent: #ffd179;
   --red-main: #f66d76;
   --primary-accent: #f55761;
   --border-main: #222;
-  --text-primary-main: var(--secondary-main);
+  --text-main: var(--black-main);
+  --text-inverse: var(--white-main);
 }
 
 * {
@@ -22,7 +27,7 @@
 body,
 html {
   background-color: var(--background-main);
-  color: var(--secondary-main);
+  color: var(--text-main);
   font-family: 'Poppins';
   height: 100%;
   width: 100%;
@@ -57,12 +62,12 @@ h3 {
 }
 
 a {
-  color: var(--secondary-main);
+  color: var(--text-main);
   text-decoration: none;
 }
 
 a:visited {
-  color: var(--secondary-main);
+  color: var(--text-main);
   text-decoration: none;
 }
 

@@ -6,7 +6,6 @@
 
 .main {
   grid-area: main;
-  padding: 64px;
   height: 100vh;
 }
 
@@ -19,16 +18,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--secondary-main);
+  background-color: var(--black-main);
 }
 
 .text {
   font-size: 96px;
   font-weight: 900;
-  stroke: var(--primary-main);
+  stroke: var(--text-inverse);
   stroke-width: 2;
   height: 100px;
   width: 100%;
-  fill: var(--primary-main);
+  fill: var(--text-inverse);
   fill-opacity: 0;
 }

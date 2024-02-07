@@ -4,14 +4,14 @@
   width: 500px;
   display: flex;
   flex-direction: column;
-  border: 3px solid var(--secondary-main);
+  border: 3px solid var(--black-main);
   border-radius: 16px;
   overflow: hidden;
 }
 
 .header {
-  background-color: var(--secondary-main);
-  color: var(--primary-main);
+  background-color: var(--text-main);
+  color: var(--text-inverse);
   padding: 18px 24px;
 
   h3 {

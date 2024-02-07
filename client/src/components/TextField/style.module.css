@@ -13,7 +13,7 @@
   height: 48px;
   width: 320px;
   border: none;
-  outline: 2px solid var(--secondary-main);
+  outline: 2px solid var(--black-main);
   padding: 12px;
   font-size: 1rem;
   font-family: 'IBM Plex Mono';

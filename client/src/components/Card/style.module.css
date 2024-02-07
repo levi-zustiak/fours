@@ -13,7 +13,7 @@
 }
 
 .background.default {
-  background-color: var(--secondary-main);
+  background-color: var(--black-main);
 }
 
 .background.red {
@@ -25,8 +25,8 @@
 }
 
 .heading {
-  background-color: var(--secondary-main);
-  color: var(--primary-main);
+  background-color: var(--black-main);
+  color: var(--text-inverse);
   width: 100%;
   padding: 1rem;
   border-radius: 10px 10px 0 0;
@@ -35,12 +35,12 @@
 
 .heading.red {
   background-color: var(--red-main);
-  color: var(--secondary-main);
+  color: var(--text-main);
 }
 
 .heading.yellow {
   background-color: var(--yellow-main);
-  color: var(--secondary-main);
+  color: var(--text-main);
 }
 
 .content {
