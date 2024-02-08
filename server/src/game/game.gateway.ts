@@ -23,9 +23,8 @@ export class GameGateway
   constructor(private readonly gameSvc: GameService) {}
 
   @UseGuards(WsAuthGuard)
-  @SubscribeMessage('join')
+  @SubscribeMessage('game:join')
   join(@ConnectedSocket() client: Socket, @MessageBody() data) {
-    // const game = this.gameSvc.joinWSocket(client, data);
     const game = this.gameSvc.get(data.gameId);
 
     if (!game) return;
@@ -41,6 +40,15 @@ export class GameGateway
     const game = this.gameSvc.update(client.data.user, data);
 
     this.server.to(game.id).emit('game:update', { game });
+  }
+
+  @UseGuards(WsAuthGuard)
+  @SubscribeMessage('game:chat')
+  handleChat(@ConnectedSocket() client: Socket, @MessageBody() data) {
+    console.log(client.data);
+    const chat = { from: client.data.user, text: data.message };
+
+    this.server.to(data.gameId).emit('game:chat', chat);
   }
 
   @OnEvent('game:start')

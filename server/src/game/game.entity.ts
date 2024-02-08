@@ -1,41 +1,19 @@
+import { User } from '@prisma/client';
 import { v4 } from 'uuid';
 
-type Player = any;
-
-enum STAGE {
-  WAITING = 'waiting',
-  PLAYING = 'playing',
-  DISCONNECTED = 'disconnected',
-  ENDED = 'ended',
-}
-
-type Token = {
-  playedBy: Player;
-  coords: Coords;
-};
-
-type Coords = {
-  row: number;
-  col: number;
-};
-
-type Cell = any;
+import { Token, STAGE, Player, Position } from '../../../core/types/game';
 
 export class Game {
   public id: string;
-  public players: Array<any>;
-  public spectators: Array<any>;
-  public host: Player;
-  public peer: Player;
+  public players: Array<Player>;
+  public spectators: Array<User>;
   public stage: STAGE;
   public board: any;
-  public currentPlayer: number;
+  public currentPlayer: Position;
   public moveList: Array<Token>;
 
   constructor() {
     this.id = v4();
-    this.host = null;
-    this.peer = null;
     this.stage = STAGE.WAITING;
     this.players = [];
     this.spectators = [];
@@ -58,7 +36,7 @@ export class Game {
     const p1 = crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
 
     this.players[0].playingAs = p1;
-    this.players[1].playingAs = 1 - p1;
+    this.players[1].playingAs = (1 - p1) as Position;
     this.currentPlayer = 0;
     this.board = [
       [
@@ -212,7 +190,7 @@ export class Game {
     return !this.board.flat().some((cell) => cell === null);
   }
 
-  private checkArray(arr: Cell[]): boolean {
+  private checkArray(arr: Token[]): boolean {
     return arr.every((token) => token && token.playedBy === arr[0].playedBy);
   }
 
@@ -225,6 +203,6 @@ export class Game {
   }
 
   switchPlayer() {
-    this.currentPlayer = 1 - this.currentPlayer;
+    this.currentPlayer = (1 - this.currentPlayer) as Position;
   }
 }

@@ -12,8 +12,6 @@ export class UnauthorizedExceptionFilter implements ExceptionFilter {
     const req = ctx.getRequest();
     const res = ctx.getResponse();
 
-    console.log(req.path, req.session);
-
     req.session.intended = req.path;
 
     res.redirect(303, '/login');

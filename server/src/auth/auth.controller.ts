@@ -11,6 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { Inertia } from 'src/inertia/inertia.decorator';
 
 @Controller()
 export class AuthController {
@@ -18,16 +19,19 @@ export class AuthController {
 
   // TODO: Prevent access to this page if user is already logged in
   @Get('/login')
-  getLogin() {
-    return {
+  async getLogin(@Inertia() inertia) {
+    await inertia.render({
       component: '/auth/login',
-      props: {},
-    };
+    });
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Request() req, @Response() res): Promise<void> {
+  async login(
+    @Request() req,
+    @Response() res,
+    @Inertia() inertia,
+  ): Promise<void> {
     const token = await this.authService.login(req.user);
 
     res.cookie('access_token', token, {
@@ -35,41 +39,40 @@ export class AuthController {
       httpOnly: true,
     });
 
-    res.redirect(303, req.session.intended || '/');
+    inertia.redirect(req.session.intended || '/');
   }
 
   @Get('/logout')
-  logout(@Response() res): void {
+  logout(@Response() res, @Inertia() inertia): void {
     res.clearCookie('access_token');
 
-    res.redirect(303, '/');
+    inertia.redirect('/');
   }
 
   @Get('/register')
-  getRegister() {
-    return {
+  getRegister(@Inertia() inertia) {
+    inertia.render({
       component: '/auth/register',
-      props: {},
-    };
+    });
   }
 
   @Post('/register')
-  register(@Response() res, @Body() registerDto: Record<string, any>) {
+  register(@Inertia() inertia, @Body() registerDto: Record<string, any>) {
     const user = this.authService.signUp(registerDto);
 
     if (user) {
-      res.redirect(303, '/login');
+      inertia.redirect(303, '/login');
     }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  getProfile(@Request() req) {
-    return {
+  getProfile(@Request() req, @Inertia() inertia) {
+    inertia.render({
       component: '/auth/profile',
       props: {
         user: req.user,
       },
-    };
+    });
   }
 }
