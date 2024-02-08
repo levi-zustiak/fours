@@ -1,11 +1,8 @@
 import { Card } from '@components/Card';
 import { Link } from 'inertia-solid';
 import { OptionCard } from './OptionCard';
-
-function Proto(props) {
-  return;
-  <div></div>;
-}
+import { Token } from './game/play/components/History/Entry/Entry';
+import { Option } from './components/Option';
 
 export function Page(page) {
   console.log(page);
@@ -20,11 +17,12 @@ export function Page(page) {
         'align-items': 'center',
       }}
     >
-      <div style={{ flex: 1, display: 'grid', 'place-items': 'center' }}>
+      <div style={{ display: 'grid', 'place-items': 'center' }}>
         <h1
           style={{
             'font-family': 'Rubik Mono One',
-            'font-size': 'clamp(16px, 20vw, 50vw)',
+            'font-size': '128px',
+            // 'font-size': 'clamp(16px, 20vw, 50vw)',
             'line-height': 'clamp(16px, 20vw, 50vw)',
           }}
         >
@@ -34,22 +32,19 @@ export function Page(page) {
       <div
         style={{
           display: 'flex',
-          width: '100%',
           height: '250px',
+          gap: '32px',
         }}
       >
-        <OptionCard text="Create" color="primary" />
-        <OptionCard text="Join" color="secondary" />
-        {/* <div
-          style={{ 'background-color': 'black', height: '100%', width: '100%' }}
-        ></div> */}
-        {/* <div
-          style={{
-            'background-color': 'black',
-            height: '100%',
-            width: '100%',
-          }}
-        ></div> */}
+        {/* <OptionCard text="Create" color="primary" />
+        <OptionCard text="Join" color="secondary" /> */}
+
+        <Link href="/game/create">
+          <Option>Create</Option>
+        </Link>
+        <Link href="/game/join">
+          <Option>Join</Option>
+        </Link>
       </div>
       {/* <Link href="/game/create">
           <Card

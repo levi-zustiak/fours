@@ -1,18 +1,37 @@
 .container {
-  background-color: var(--black-main);
-  height: 100%;
-  width: 100%;
+  background-color: var(--background-accent);
+  /* height: 100%; */
+  width: 350px;
+  height: 200px;
   transition: all 250ms ease-in-out;
   display: grid;
   place-items: center;
+  border-radius: 24px;
+  padding: 0px 4rem;
+  position: relative;
+}
+
+.container:hover {
+  /* transform: rotateZ(-5deg); */
 }
 
 .primary:hover {
   background-color: var(--primary-main);
+  color: var(--text-inverse);
+  transform: rotateZ(-4deg);
+
+  .text {
+    transform: rotateZ(4deg);
+  }
 }
 
 .secondary:hover {
   background-color: var(--secondary-main);
+  transform: rotateZ(4deg);
+
+  .text {
+    transform: rotateZ(-4deg);
+  }
 }
 
 /* .container:hover {
@@ -20,5 +39,8 @@
 } */
 
 .text {
-  color: var(--text-inverse);
+  position: absolute;
+  font-family: 'Rubik Mono One';
+  font-size: 48px;
+  transition: all 250ms ease-in-out;
 }

@@ -6,7 +6,7 @@
   --black-light: #2e2e2e;
   --background-main: #fffbf2;
   --background-accent: #f5efe2;
-  --primary-main: #e4565f;
+  --primary-main: #f66d76;
   --primary-accent: #f55761;
   --yellow-main: #ffdb96;
   --secondary-main: #f6c76d;
@@ -28,7 +28,7 @@ body,
 html {
   background-color: var(--background-main);
   color: var(--text-main);
-  font-family: 'Poppins';
+  font-family: 'Rubik Mono One';
   height: 100%;
   width: 100%;
 }

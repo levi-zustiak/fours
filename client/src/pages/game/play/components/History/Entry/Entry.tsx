@@ -1,10 +1,10 @@
 import styles from './style.module.css';
 
-import { Token } from '../../../../../../../../core/types/game';
+import { Cell } from '../../../../../../../../core/types/game';
 import clsx from 'clsx';
 import { GSAP } from '@packages/gsap';
 
-function Icon({ playedBy }) {
+export function Token({ fill, stroke }) {
   return (
     <svg
       class={styles.svg}
@@ -16,20 +16,22 @@ function Icon({ playedBy }) {
         cx="32.5"
         cy="32"
         r="32"
-        fill={playedBy ? 'var(--yellow-main)' : 'var(--red-main)'}
+        fill={fill}
+        // fill={primary ? 'var(--yellow-main)' : 'var(--red-main)'}
       />
       <circle
         cx="32.5"
         cy="32"
         r="20.9471"
-        stroke={playedBy ? 'var(--secondary-accent)' : 'var(--primary-accent)'}
+        stroke={stroke}
+        // stroke={primary ? 'var(--secondary-accent)' : 'var(--primary-accent)'}
         stroke-width="6.10577"
       />
     </svg>
   );
 }
 
-export function Entry(props: Token) {
+export function Entry(props: Cell) {
   return (
     <GSAP.div
       from={{ opacity: 0 }}
@@ -37,7 +39,12 @@ export function Entry(props: Token) {
         [styles.winner]: props.winningToken,
       })}
     >
-      <Icon playedBy={props.playedBy} />
+      <Token
+        fill={props.playedBy ? 'var(--secondary-main)' : 'var(--primary-main)'}
+        stroke={
+          props.playedBy ? 'var(--secondary-accent)' : 'var(--primary-accent)'
+        }
+      />
       <p class={styles.text}>
         C: {props.coords.col} R: {props.coords.row}
       </p>
