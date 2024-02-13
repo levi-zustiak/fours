@@ -27,6 +27,8 @@ function GSAPComponent(props: GSAPComponentProps) {
     LOCAL_KEYS,
   );
 
+  const completeEvent = new Event('motioncomplete');
+
   const presence = usePresence();
 
   let ref!: Element;
@@ -52,8 +54,9 @@ function GSAPComponent(props: GSAPComponentProps) {
   };
 
   const exit = () => {
-    console.log('exit');
-    const complete = () => ref.dispatchEvent(new Event('motioncomplete'));
+    const complete = () => {
+      ref.dispatchEvent(completeEvent);
+    };
 
     if (presence && local.exit) {
       Array.isArray(local.exit)
@@ -77,6 +80,7 @@ function GSAPComponent(props: GSAPComponentProps) {
   };
 
   createEffect(() => {
+    console.log('mount', presence?.mount());
     if (presence && !presence.mount()) return;
 
     createEffect(() => enter());

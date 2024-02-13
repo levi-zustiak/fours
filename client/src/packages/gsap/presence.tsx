@@ -6,8 +6,11 @@ import {
   batch,
   JSXElement,
 } from 'solid-js';
-import { createSwitchTransition } from '@solid-primitives/transition-group';
-import { resolveFirst } from '@solid-primitives/refs';
+import {
+  createSwitchTransition,
+  createListTransition,
+} from '@solid-primitives/transition-group';
+import { resolveFirst, resolveElements } from '@solid-primitives/refs';
 
 export type PresenceContextState = {
   initial: boolean;
@@ -37,8 +40,12 @@ export function Presence(props) {
             },
             onExit(el, done) {
               batch(() => {
+                console.log('setting listeners');
                 setMount(false);
-                el.addEventListener('motioncomplete', done);
+                el.addEventListener('motioncomplete', () => {
+                  console.log('motioncomplete');
+                  done();
+                });
               });
             },
           },
@@ -49,6 +56,35 @@ export function Presence(props) {
 
   state.initial = true;
   return render;
+}
+
+export function PresenceList(props) {
+  const [mount, setMount] = createSignal(true);
+
+  const state = { initial: props.initial ?? true, mount };
+
+  return (
+    <PresenceContext.Provider value={state}>
+      {
+        createListTransition(resolveElements(() => props.children).toArray, {
+          appear: state.initial,
+          onChange({ list, added, removed, unchanged, finishRemoved }) {
+            console.log(list, added, removed);
+            batch(() => {
+              removed.forEach((el) => {
+                setMount(false);
+                el.addEventListener('motioncomplete', () => {
+                  console.log('finsihed');
+                  finishRemoved([el]);
+                });
+                console.log(el);
+              });
+            });
+          },
+        }) as any as JSXElement
+      }
+    </PresenceContext.Provider>
+  );
 }
 
 export function usePresence() {

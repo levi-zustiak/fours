@@ -7,6 +7,7 @@ export function Option(props) {
 
   return (
     <div
+      class="option"
       style={{
         position: 'relative',
         display: 'flex',
