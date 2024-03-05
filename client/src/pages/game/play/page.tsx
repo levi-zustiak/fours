@@ -120,17 +120,9 @@ function Lobby() {
   const { master } = useAnimation();
 
   return (
-    <GSAP.div
-      timeline={master}
-      class={`${styles.lobby} skew`}
-      style={{
-        position: 'relative',
-        height: '100%',
-        width: '100%',
-      }}
-      exit={{ opacity: 0, duration: 1 }}
-    >
-      <h1 class={styles.heading}>Play</h1>
+    <div>
+      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <h1 class={styles.heading}>Play</h1>
 
       <Show when={state.players[0]}>
         <div class={styles.players}>
@@ -166,19 +158,6 @@ function Lobby() {
 
           <div class={styles.player2}>
             <Presence>
-              {/* <Show when={!state.players[1]}>
-                <Waiting
-                  timeline={master}
-                  from={{
-                    y: 200,
-                    opacity: 0,
-                    duration: 1,
-                    ease: 'custom',
-                    at: '<0.2',
-                  }}
-                  exit={{ y: -100, opacity: 0, duration: 1, ease: 'custom' }}
-                />
-              </Show> */}
               <Show
                 when={state.players[1]}
                 fallback={
@@ -242,26 +221,27 @@ function Lobby() {
             </GSAP.div>
           </Show>
         </Presence>
-      </Show>
-    </GSAP.div>
+      </Show> */}
+    </div>
   );
 }
 
 function Test() {
   const { state } = useGame();
+  console.log(state);
 
   return (
     // <Lobby />
-    <Presence exitBeforeEnter>
-      <Switch fallback={<p>Loading...</p>}>
-        <Match when={state.stage === 'waiting'}>
-          <Lobby />
-        </Match>
-        <Match when={state.stage === 'playing' || state.stage === 'ended'}>
-          <Game />
-        </Match>
-      </Switch>
-    </Presence>
+    // <Presence exitBeforeEnter>
+    <Switch fallback={<p>Loading...</p>}>
+      <Match when={state.stage === 'waiting'}>
+        <Lobby />
+      </Match>
+      <Match when={state.stage === 'playing' || state.stage === 'ended'}>
+        <Game />
+      </Match>
+    </Switch>
+    // </Presence>
   );
 }
 

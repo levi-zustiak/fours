@@ -24,34 +24,12 @@ export function Presence(props) {
 
   const state = { initial: props.initial ?? true, mount };
 
+  const c = resolveFirst(() => props.children);
+
+  console.log(c);
+
   const render = (
-    <PresenceContext.Provider value={state}>
-      {
-        createSwitchTransition(
-          resolveFirst(() => props.children),
-          {
-            appear: state.initial,
-            mode: props.exitBeforeEnter ? 'out-in' : 'parallel',
-            onEnter(_, done) {
-              batch(() => {
-                setMount(true);
-                done();
-              });
-            },
-            onExit(el, done) {
-              batch(() => {
-                console.log('setting listeners');
-                setMount(false);
-                el.addEventListener('motioncomplete', () => {
-                  console.log('motioncomplete');
-                  done();
-                });
-              });
-            },
-          },
-        ) as any as JSXElement
-      }
-    </PresenceContext.Provider>
+    <PresenceContext.Provider value={state}>{}</PresenceContext.Provider>
   );
 
   state.initial = true;

@@ -4,7 +4,7 @@
   --white-main: #fff;
   --black-main: #181818;
   --black-light: #2e2e2e;
-  --background-main: #fffbf2;
+  --background-main: var(--white-main);
   --background-accent: #f5efe2;
   --primary-main: #f66d76;
   --primary-accent: #f55761;
@@ -16,6 +16,7 @@
   --border-main: #222;
   --text-main: var(--black-main);
   --text-inverse: var(--white-main);
+  --blue: #35a7ff;
 }
 
 * {
@@ -28,13 +29,13 @@ body,
 html {
   background-color: var(--background-main);
   color: var(--text-main);
-  font-family: 'Rubik Mono One';
+  font-family: 'Rubik';
   height: 100%;
   width: 100%;
 }
 
 body::before {
-  background: url('http://localhost:5173/src/assets/noise.svg');
+  /* background: url('http://localhost:5173/src/assets/noise.svg'); */
   position: fixed;
   left: 0;
   top: 0;

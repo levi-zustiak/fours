@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { v4 } from 'uuid';
 
-import { Token, STAGE, Player, Position } from '../../../core/types/game';
+import { Cell, STAGE, Player, Position } from './game.types';
 
 export class Game {
   public id: string;
@@ -10,7 +10,7 @@ export class Game {
   public stage: STAGE;
   public board: any;
   public currentPlayer: Position;
-  public moveList: Array<Token>;
+  public moveList: Array<Cell>;
 
   constructor() {
     this.id = v4();
@@ -190,7 +190,7 @@ export class Game {
     return !this.board.flat().some((cell) => cell === null);
   }
 
-  private checkArray(arr: Token[]): boolean {
+  private checkArray(arr: Cell[]): boolean {
     return arr.every((token) => token && token.playedBy === arr[0].playedBy);
   }
 

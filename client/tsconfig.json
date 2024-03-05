@@ -11,7 +11,8 @@
     "types": ["vite/client"],
     "noEmit": true,
     "isolatedModules": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "composite": true
   },
   "extends": "./tsconfig.paths.json",
   "include": ["./src"]

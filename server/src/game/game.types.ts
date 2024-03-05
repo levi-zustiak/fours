@@ -1,4 +1,4 @@
-import { User } from './auth';
+import { User } from '@prisma/client';
 
 export enum STAGE {
   WAITING = 'waiting',

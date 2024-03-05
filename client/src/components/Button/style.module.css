@@ -1,17 +1,16 @@
-.button {
-  height: 48px;
+.base {
   border: 2px solid var(--black-main);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 8px;
   color: var(--text-inverse);
-  background-color: var(--black-main);
-  font-family: 'Poppins';
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 1rem;
-  transition: all 150ms ease-in-out;
+  /* transition: all 150ms ease-in-out; */
 }
 
 .text {
+  border: none;
 }
 
 .outlined {
@@ -25,8 +24,28 @@
 }
 
 .filled {
+  background-color: var(--black-main);
 }
 
 .filled:hover {
   background-color: var(--black-light);
+}
+
+.sm {
+  height: 32px;
+  min-width: 64px;
+}
+
+.md {
+  height: 48px;
+  min-width: 96px;
+  font-size: 1rem;
+  border-width: 2px;
+}
+
+.lg {
+  height: 60px;
+  min-width: 128px;
+  font-size: 1.33rem;
+  border-width: 3px;
 }
