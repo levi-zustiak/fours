@@ -3,7 +3,6 @@ import { GameProvider, useGame } from '@contexts/GameContext';
 import { Match, Show, Switch, createEffect, onMount } from 'solid-js';
 import styles from './style.module.css';
 import { Card } from '@components/Card';
-import { animate, stagger } from 'motion';
 import { Button } from '@components/Button';
 import { router } from 'inertia-solid';
 import { useAnimation } from '@contexts/AnimationContext';
@@ -18,102 +17,102 @@ CustomEase.create('custom', '0.6, -0.05, 0.01, 0.99');
 
 gsap.registerPlugin(CustomEase);
 
-function Waiting(props) {
-  onMount(() => {
-    animate(
-      '.waiting',
-      {
-        transform: ['translateY(0)', 'translateY(-16px)', 'translateY(0)'],
-      },
-      {
-        duration: 1.5,
-        delay: stagger(0.1),
-        repeat: Infinity,
-      },
-    );
-  });
+// function Waiting(props) {
+//   onMount(() => {
+//     animate(
+//       '.waiting',
+//       {
+//         transform: ['translateY(0)', 'translateY(-16px)', 'translateY(0)'],
+//       },
+//       {
+//         duration: 1.5,
+//         delay: stagger(0.1),
+//         repeat: Infinity,
+//       },
+//     );
+//   });
 
-  return (
-    <GSAP.div
-      {...props}
-      style={{
-        display: 'inline-block',
-      }}
-    >
-      <h1 style={{ display: 'flex', 'user-select': 'none' }}>
-        <div class="waiting">W</div>
-        <div class="waiting">a</div>
-        <div class="waiting">i</div>
-        <div class="waiting">t</div>
-        <div class="waiting">i</div>
-        <div class="waiting">n</div>
-        <div class="waiting">g</div>
-      </h1>
-      <div
-        style={{
-          position: 'absolute',
-          display: 'flex',
-          gap: '2px',
-          right: 0,
-          bottom: 0,
-          transform: 'translate(100%, -16px)',
-        }}
-      >
-        <svg
-          class="waiting"
-          width="32"
-          height="32"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="8" cy="8" r="8" fill="#F76D76" />
-          <circle
-            cx="8"
-            cy="8"
-            r="5.23077"
-            stroke="#F55761"
-            stroke-width="1.53846"
-          />
-        </svg>
-        <svg
-          class="waiting"
-          width="32"
-          height="32"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="8" cy="8" r="8" fill="#FFDC97" />
-          <circle
-            cx="8"
-            cy="8"
-            r="5.23077"
-            stroke="#FFD179"
-            stroke-width="1.53846"
-          />
-        </svg>
-        <svg
-          class="waiting"
-          width="32"
-          height="32"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="8" cy="8" r="8" fill="#F76D76" />
-          <circle
-            cx="8"
-            cy="8"
-            r="5.23077"
-            stroke="#F55761"
-            stroke-width="1.53846"
-          />
-        </svg>
-      </div>
-    </GSAP.div>
-  );
-}
+//   return (
+//     <GSAP.div
+//       {...props}
+//       style={{
+//         display: 'inline-block',
+//       }}
+//     >
+//       <h1 style={{ display: 'flex', 'user-select': 'none' }}>
+//         <div class="waiting">W</div>
+//         <div class="waiting">a</div>
+//         <div class="waiting">i</div>
+//         <div class="waiting">t</div>
+//         <div class="waiting">i</div>
+//         <div class="waiting">n</div>
+//         <div class="waiting">g</div>
+//       </h1>
+//       <div
+//         style={{
+//           position: 'absolute',
+//           display: 'flex',
+//           gap: '2px',
+//           right: 0,
+//           bottom: 0,
+//           transform: 'translate(100%, -16px)',
+//         }}
+//       >
+//         <svg
+//           class="waiting"
+//           width="32"
+//           height="32"
+//           viewBox="0 0 16 16"
+//           fill="none"
+//           xmlns="http://www.w3.org/2000/svg"
+//         >
+//           <circle cx="8" cy="8" r="8" fill="#F76D76" />
+//           <circle
+//             cx="8"
+//             cy="8"
+//             r="5.23077"
+//             stroke="#F55761"
+//             stroke-width="1.53846"
+//           />
+//         </svg>
+//         <svg
+//           class="waiting"
+//           width="32"
+//           height="32"
+//           viewBox="0 0 16 16"
+//           fill="none"
+//           xmlns="http://www.w3.org/2000/svg"
+//         >
+//           <circle cx="8" cy="8" r="8" fill="#FFDC97" />
+//           <circle
+//             cx="8"
+//             cy="8"
+//             r="5.23077"
+//             stroke="#FFD179"
+//             stroke-width="1.53846"
+//           />
+//         </svg>
+//         <svg
+//           class="waiting"
+//           width="32"
+//           height="32"
+//           viewBox="0 0 16 16"
+//           fill="none"
+//           xmlns="http://www.w3.org/2000/svg"
+//         >
+//           <circle cx="8" cy="8" r="8" fill="#F76D76" />
+//           <circle
+//             cx="8"
+//             cy="8"
+//             r="5.23077"
+//             stroke="#F55761"
+//             stroke-width="1.53846"
+//           />
+//         </svg>
+//       </div>
+//     </GSAP.div>
+//   );
+// }
 
 function Lobby() {
   const { state } = useGame();

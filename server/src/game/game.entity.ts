@@ -92,6 +92,8 @@ export class Game {
     }
   }
 
+  rematch(player: Player) {}
+
   validate(player: Player) {
     return (
       player.id === this.players[this.currentPlayer].id &&

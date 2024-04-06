@@ -78,7 +78,7 @@ export function Board(props) {
 
   return (
     <GSAP.div
-      ref={ref}
+      ref={props.ref}
       class={styles.board}
       // ref={props.ref}
       // timeline={master}

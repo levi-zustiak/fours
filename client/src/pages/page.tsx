@@ -8,7 +8,7 @@ import { Board } from './game/play/components/Board';
 
 export function Page(page) {
   const { master } = useAnimation();
-  let h1, text, actions;
+  let h1, text, actions, board;
 
   onMount(() => {
     function animation() {
@@ -19,7 +19,7 @@ export function Page(page) {
         opacity: 0,
         ease: 'power2.inOut',
         duration: 0.66,
-        delay: 0.5,
+        // delay: 0.5,
       });
       tl.from(
         text,
@@ -30,6 +30,27 @@ export function Page(page) {
         actions,
         { y: 32, opacity: 0, ease: 'power2.inOut', duration: 0.66 },
         '<+=0.1',
+      );
+      tl.fromTo(
+        board,
+        {
+          scale: 0.8,
+          y: '100%',
+          opacity: 0,
+          position: 'absolute',
+          bottom: 0,
+          // transform: 'translateY(100%)',
+        },
+        {
+          // scale: 0.9,
+          scale: 1,
+          ease: 'back.out(1)',
+          y: '50%',
+          // transform: 'translateY(50%)',
+          opacity: 1,
+          duration: 0.66,
+        },
+        '<+=0.33',
       );
 
       return tl;
@@ -88,7 +109,7 @@ export function Page(page) {
           Join
         </Button>
       </div>
-      {/* <Board ref={board} /> */}
+      <Board ref={board} />
     </div>
   );
 }

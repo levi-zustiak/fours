@@ -47,6 +47,14 @@ export class GameService {
     return game;
   }
 
+  public rematch(player, { gameId }) {
+    const game = this.games.get(gameId);
+
+    //    game.rematch();
+
+    return game;
+  }
+
   public get(gameId: string): Game | undefined {
     const game = this.games.get(gameId);
 

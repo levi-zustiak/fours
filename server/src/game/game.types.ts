@@ -2,6 +2,7 @@ import { User } from '@prisma/client';
 
 export enum STAGE {
   WAITING = 'waiting',
+  CONNECTED = 'connected',
   PLAYING = 'playing',
   DISCONNECTED = 'disconnected',
   ENDED = 'ended',

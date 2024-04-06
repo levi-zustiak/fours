@@ -39,6 +39,7 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - postgres
+    networks: ['server']
 
   postgres:
     <<: *default-config
@@ -53,6 +54,11 @@ services:
       - '${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}'
     volumes:
       - fours-db:/var/lib/postresql/data
+    networks: ['server']
 
 volumes:
   fours-db:
+
+networks:
+  server:
+    driver: bridge

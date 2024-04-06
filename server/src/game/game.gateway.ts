@@ -51,6 +51,17 @@ export class GameGateway
     this.server.to(data.gameId).emit('game:chat', chat);
   }
 
+  @UseGuards(WsAuthGuard)
+  @SubscribeMessage('rematch:init')
+  handleRematch(@ConnectedSocket() client: Socket) {
+    // const game = this.gameSvc.rematch(client.data.user);
+    // this.server.to(data.gameId).emit('game:rematch', { game });
+  }
+
+  @UseGuards(WsAuthGuard)
+  @SubscribeMessage('rematch:accept')
+  acceptRematch() {}
+
   @OnEvent('game:start')
   handleGameStart(payload) {
     const { game } = payload;
