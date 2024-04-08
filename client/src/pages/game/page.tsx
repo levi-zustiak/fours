@@ -115,12 +115,13 @@ gsap.registerPlugin(CustomEase);
 // }
 
 function Lobby() {
-  const { state } = useGame();
+  const { state, ready } = useGame();
   const { master } = useAnimation();
 
   return (
     <div>
       <pre>{JSON.stringify(state, null, 2)}</pre>
+      <button onClick={ready}>Ready</button>
       {/* <h1 class={styles.heading}>Play</h1>
 
       <Show when={state.players[0]}>
@@ -225,9 +226,8 @@ function Lobby() {
   );
 }
 
-function Test() {
+function Components() {
   const { state } = useGame();
-  console.log(state);
 
   return (
     // <Lobby />
@@ -245,9 +245,11 @@ function Test() {
 }
 
 export function Page(props) {
+  console.log(props);
+
   return (
     <GameProvider initialState={props.game}>
-      <Test />
+      <Components />
     </GameProvider>
   );
 }

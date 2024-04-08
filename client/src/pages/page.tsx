@@ -4,7 +4,7 @@ import { GSAP } from '@packages/gsap';
 import { useAnimation } from '@contexts/AnimationContext';
 import { gsap } from 'gsap';
 import { Button } from '@components/Button';
-import { Board } from './game/play/components/Board';
+import { Board } from './game/components/Board';
 
 export function Page(page) {
   const { master } = useAnimation();
@@ -94,7 +94,7 @@ export function Page(page) {
         }}
       >
         <Button
-          onClick={() => router.get('/game/create')}
+          onClick={() => router.get('/game')}
           size="lg"
           style={{ width: '180px' }}
         >
