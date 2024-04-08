@@ -17,8 +17,8 @@ import { inertiaAdapter } from 'src/inertia/inertiaAdapter';
 export class GameController {
   constructor(protected gameSvc: GameService) {}
 
-  @Get('/create')
-  getCreate(@Inertia() inertia) {
+  @Get('/')
+  index(@Inertia() inertia) {
     const game = this.gameSvc.create();
 
     inertia.redirect(`/game/${game.id}`);
@@ -27,7 +27,7 @@ export class GameController {
   }
 
   @Get('/join')
-  getJoin() {
+  join() {
     return {
       component: '/game/join',
       props: {},
@@ -44,22 +44,15 @@ export class GameController {
   }
 
   @Get('/:id')
-  wait(@Inertia() inertia, @Req() req, @Param('id') gameId: string) {
+  show(@Inertia() inertia: any, @Req() req: any, @Param('id') gameId: string) {
     const game = this.gameSvc.join(req.user, gameId);
 
     inertia.render({
-      component: '/game/play',
+      component: '/game',
       props: {
         game,
         user: req.user,
       },
     });
-
-    // return {
-    //   component: '/game/play',
-    //   props: {
-    //     game,
-    //   },
-    // };
   }
 }

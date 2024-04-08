@@ -1,11 +1,10 @@
 import { User } from '@prisma/client';
 
-export enum STAGE {
+export enum GameStage {
   WAITING = 'waiting',
-  CONNECTED = 'connected',
   PLAYING = 'playing',
+  RECONNECTING = 'reconnecting',
   DISCONNECTED = 'disconnected',
-  ENDED = 'ended',
 }
 
 export type Position = 0 | 1;
@@ -23,5 +22,6 @@ export type Coords = {
 
 export type Player = {
   wins: number;
-  playingAs?: Position;
+  ready: boolean;
+  playingAs?: number;
 } & User;

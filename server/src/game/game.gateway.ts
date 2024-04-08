@@ -8,13 +8,12 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { GameService } from './game.service';
 import { Server, Socket } from 'socket.io';
-import { OnEvent } from '@nestjs/event-emitter';
+import { GameService } from './game.service';
 import { UseGuards } from '@nestjs/common';
 import { WsAuthGuard } from 'src/auth/guards/ws-auth.guard';
 
-@WebSocketGateway({ namespace: 'games' })
+@WebSocketGateway({ namespace: 'game' })
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -23,61 +22,84 @@ export class GameGateway
   constructor(private readonly gameSvc: GameService) {}
 
   @UseGuards(WsAuthGuard)
-  @SubscribeMessage('game:join')
-  join(@ConnectedSocket() client: Socket, @MessageBody() data) {
-    const game = this.gameSvc.get(data.gameId);
+  @SubscribeMessage('join')
+  join(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { gameId }: { gameId: string },
+  ) {
+    const game = this.gameSvc.get(gameId);
 
-    if (!game) return;
+    if (!game) {
+      return {
+        error: 'Failed to join lobby',
+      };
+    }
 
+    console.log(`User ${client.data.user.name} joined the game`);
     client.join(game.id);
 
-    this.server.to(game.id).emit('game:update', { game });
+    this.server.to(game.id).emit('update', { game });
   }
 
   @UseGuards(WsAuthGuard)
-  @SubscribeMessage('game:update')
-  handleUpdate(@ConnectedSocket() client: Socket, @MessageBody() data) {
+  @SubscribeMessage('ready')
+  ready(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { gameId }: { gameId: string },
+  ) {
+    const game = this.gameSvc.ready(client.data.user, gameId);
+
+    if (!game) {
+      return {
+        error: 'Failed to ready up',
+      };
+    }
+
+    this.server.to(game.id).emit('update', { game });
+  }
+
+  @UseGuards(WsAuthGuard)
+  @SubscribeMessage('update')
+  update(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { gameId: string; col: number },
+  ) {
     const game = this.gameSvc.update(client.data.user, data);
 
-    this.server.to(game.id).emit('game:update', { game });
+    if (!game) {
+      return {
+        error: 'Failed to update game',
+      };
+    }
+
+    this.server.to(game.id).emit('update', { game });
   }
 
-  @UseGuards(WsAuthGuard)
-  @SubscribeMessage('game:chat')
-  handleChat(@ConnectedSocket() client: Socket, @MessageBody() data) {
-    console.log(client.data);
-    const chat = { from: client.data.user, text: data.message };
+  @SubscribeMessage('rematch')
+  rematch(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { gameId }: { gameId: string },
+  ) {
+    const game = this.gameSvc.rematch(client.data.user, gameId);
 
-    this.server.to(data.gameId).emit('game:chat', chat);
+    this.server.to(game.id).emit('update', { game });
   }
 
-  @UseGuards(WsAuthGuard)
-  @SubscribeMessage('rematch:init')
-  handleRematch(@ConnectedSocket() client: Socket) {
-    // const game = this.gameSvc.rematch(client.data.user);
-    // this.server.to(data.gameId).emit('game:rematch', { game });
+  @SubscribeMessage('accept')
+  accept(@ConnectedSocket() client: Socket, data: string) {}
+
+  @SubscribeMessage('chat')
+  chat(@ConnectedSocket() client: Socket) {}
+
+  public afterInit() {
+    this.gameSvc.init();
   }
 
-  @UseGuards(WsAuthGuard)
-  @SubscribeMessage('rematch:accept')
-  acceptRematch() {}
-
-  @OnEvent('game:start')
-  handleGameStart(payload) {
-    const { game } = payload;
-
-    this.server.to(game.id).emit('game:start', { game });
+  public handleConnection(@ConnectedSocket() client: Socket) {
+    this.gameSvc.connect(client);
   }
 
-  public afterInit(server) {
-    this.gameSvc.init(server);
-  }
-
-  public handleConnection(@ConnectedSocket() client) {
-    return this.gameSvc.connect(client);
-  }
-
-  public handleDisconnect(@ConnectedSocket() client) {
-    return this.gameSvc.disconnect(client);
+  public handleDisconnect(@ConnectedSocket() client: Socket) {
+    this.gameSvc.disconnect(client);
   }
 }
