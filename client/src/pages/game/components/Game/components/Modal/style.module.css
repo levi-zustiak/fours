@@ -1,0 +1,14 @@
+.root_container {
+}
+
+.content_container {
+  border: 3px solid var(--border-main);
+  background-color: var(--background-main);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.actions_container {
+  display: flex;
+  gap: 1rem;
+}

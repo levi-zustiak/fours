@@ -6,6 +6,7 @@ import { Info } from '../Info';
 import styles from './style.module.css';
 import { Show } from 'solid-js';
 import { usePage } from 'inertia-solid';
+import { Modal } from './components/Modal';
 
 function Modals() {
   const { state, rematch, accept } = useGame();
@@ -13,15 +14,21 @@ function Modals() {
 
   return (
     <>
-      <Show when={!state.engine?.playing}>
-        <div style={{ position: 'absolute', border: '3px solid orange' }}>
-          <h1>GameOver</h1>
-          <button onClick={rematch}>Rematch?</button>
-        </div>
-      </Show>
+      <Modal.Root>
+        <Modal.Portal when={!state.engine?.playing}>
+          <Modal.Content>
+            <h3>Game Over</h3>
+            <Modal.Actions>
+              <button onClick={rematch}>Rematch?</button>
+            </Modal.Actions>
+          </Modal.Content>
+        </Modal.Portal>
+      </Modal.Root>
       <Show when={state.challenge?.challenger}>
-        <h1>Rematch?</h1>
-        <button onClick={accept}>Accept</button>
+        <div style={{ position: 'absolute', border: '3px solid orange' }}>
+          <h1>Rematch?</h1>
+          <button onClick={accept}>Accept</button>
+        </div>
       </Show>
     </>
   );
