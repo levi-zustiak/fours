@@ -63,6 +63,14 @@ const GameProvider = (props: any) => {
     socket.emit('update', { gameId: state.id, col });
   };
 
+  const rematch = () => {
+    socket.emit('rematch', { gameId: state.id });
+  };
+
+  const accept = () => {
+    socket.emit('accept', { gameId: state.id });
+  };
+
   const sendChat = (message: string) => {
     socket.emit('chat', { gameId: state.id, message });
   };
@@ -79,6 +87,8 @@ const GameProvider = (props: any) => {
     state,
     ready,
     play,
+    rematch,
+    accept,
     chats,
     sendChat,
   };

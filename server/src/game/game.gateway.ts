@@ -86,7 +86,14 @@ export class GameGateway
   }
 
   @SubscribeMessage('accept')
-  accept(@ConnectedSocket() client: Socket, data: string) {}
+  accept(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { gameId }: { gameId: string },
+  ) {
+    const game = this.gameSvc.accept(client.data.user, gameId);
+
+    this.server.to(game.id).emit('update', { game });
+  }
 
   @SubscribeMessage('chat')
   chat(@ConnectedSocket() client: Socket) {}

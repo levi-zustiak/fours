@@ -55,15 +55,16 @@ export class Game {
   }
 
   public rematch(user: User) {
-    this.state.rematch = {
+    this.challenge = {
       challenger: user.id,
       recipient: user.id,
-      // recipient: this.players.find((player) => player.id !== user.id).id,
     };
   }
 
-  public acceptRematch() {
-    delete this.state.rematch;
+  public accept() {
+    delete this.challenge;
+
+    this.start();
   }
 
   private next(stage: GameStage) {

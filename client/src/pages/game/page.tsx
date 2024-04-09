@@ -114,6 +114,12 @@ gsap.registerPlugin(CustomEase);
 //   );
 // }
 
+function Modals() {
+  const { state } = useGame();
+
+  return <h1>Gameover</h1>;
+}
+
 function Lobby() {
   const { state, ready } = useGame();
   const { master } = useAnimation();

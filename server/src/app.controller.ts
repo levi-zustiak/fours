@@ -11,7 +11,7 @@ export class AppController {
   @Get()
   getHello(@Inertia() inertia: Inertia) {
     inertia.render({
-      component: '',
+      component: '/home',
       props: {},
     });
   }

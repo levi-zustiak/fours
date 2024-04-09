@@ -80,7 +80,11 @@ export class Engine {
   }
 
   validate(user: User) {
-    return user.id === this.players[this.currentPlayer].id && this.playing;
+    const currentPlayer = this.players.find(
+      (player) => player.playingAs === this.currentPlayer,
+    );
+
+    return user.id === currentPlayer.id && this.playing;
   }
 
   private switchPlayer() {

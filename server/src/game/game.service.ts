@@ -74,10 +74,22 @@ export class GameService {
   public rematch(user: User, gameId: string) {
     const game = this.games.get(gameId);
 
+    this.logger.log(`${user.name} wants a rematch`);
+
     // TODO: Check lobby status is still connected
     if (!game || !game.players.some((player) => player.id === user.id)) return;
 
     game.rematch(user);
+
+    return game;
+  }
+
+  public accept(user: User, gameId: string) {
+    const game = this.games.get(gameId);
+
+    this.logger.log(`${user.name} accepted the rematch`);
+
+    game.accept();
 
     return game;
   }

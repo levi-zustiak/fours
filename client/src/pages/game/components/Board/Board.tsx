@@ -140,7 +140,7 @@ export function Board(props) {
         </For>
 
         <g clip-path="url(#tokens)">
-          <For each={state.board}>
+          <For each={state?.engine?.board}>
             {(column, idx) => (
               <>
                 <rect
