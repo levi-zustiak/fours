@@ -53,11 +53,11 @@ services:
     ports:
       - '${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}'
     volumes:
-      - fours-db:/var/lib/postresql/data
+      - pgdata:/var/lib/postgresql/data
     networks: ['server']
 
 volumes:
-  fours-db:
+  pgdata:
 
 networks:
   server:
