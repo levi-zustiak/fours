@@ -1,12 +1,14 @@
 import { router } from 'inertia-solid';
-import { createSignal } from 'solid-js';
-import { Input } from '@components/Input';
+import { JSX, createSignal } from 'solid-js';
 import { Button } from '@components/Button';
+import { TextField } from '@components/TextField';
 
 export function Page({ gameId }: { gameId: string | undefined }) {
   const [value, setValue] = createSignal<string | undefined>(gameId);
 
-  const handleChange = ({ currentTarget }) => {
+  const handleChange: JSX.EventHandler<HTMLInputElement, InputEvent> = ({
+    currentTarget,
+  }) => {
     const { value } = currentTarget;
 
     setValue(value);
@@ -24,7 +26,12 @@ export function Page({ gameId }: { gameId: string | undefined }) {
     <>
       <h1>Join</h1>
       <form onSubmit={submit}>
-        <Input name="lobby_id" value={value()} onChange={handleChange} />
+        <TextField
+          label="Lobby id"
+          name="lobby_id"
+          value={value()}
+          onInput={handleChange}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </>

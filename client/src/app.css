@@ -16,6 +16,10 @@
   --border-main: #222;
   --text-main: var(--black-main);
   --text-inverse: var(--white-main);
+  --error-main: #ff3c3c;
+  --error-accent: rgba(255, 60, 60, 5%);
+  --success-main: rgba(107, 241, 120, 100%);
+  --success-accent: rgba(107, 241, 120, 10%);
   --blue: #35a7ff;
 }
 

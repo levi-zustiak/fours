@@ -12,7 +12,7 @@ type ModalPortalProps = any;
 
 export function Portal(props: ModalPortalProps) {
   return (
-    <Show when={props.when}>
+    <Show when={props.open}>
       <SolidPortal>
         <div
           style={{

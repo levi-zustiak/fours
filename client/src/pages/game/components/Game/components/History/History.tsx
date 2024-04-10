@@ -1,7 +1,7 @@
 import { For } from 'solid-js';
 import styles from './style.module.css';
 import { useGame } from '@contexts/GameContext';
-import { Container } from '../Container';
+import { Container } from '../../../Container';
 import { Entry } from './Entry';
 
 export function History() {

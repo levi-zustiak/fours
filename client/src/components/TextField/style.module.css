@@ -4,7 +4,6 @@
 }
 
 .label {
-  font-family: 'IBM Plex Mono';
   font-weight: 500;
   font-size: 1rem;
 }
@@ -15,9 +14,9 @@
   border: none;
   outline: 2px solid var(--black-main);
   padding: 12px;
+  font-family: 'Rubik';
   font-size: 1rem;
-  font-family: 'IBM Plex Mono';
-  font-weight: 500;
+  font-weight: 400;
   background-color: transparent;
   border-radius: 8px;
   margin: 8px 0;
@@ -27,4 +26,18 @@
 .input:active,
 .input:focus-within {
   outline-width: 4px;
+}
+
+.input.error {
+  outline-color: var(--error-main);
+  background-color: var(--error-accent);
+}
+
+.input.success {
+  outline-color: var(--success-main);
+  background-color: var(--success-accent);
+}
+
+.error:not(.input) {
+  color: var(--error-main);
 }

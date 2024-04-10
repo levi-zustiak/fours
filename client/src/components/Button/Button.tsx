@@ -8,6 +8,7 @@ type Props = {
   variant?: 'filled' | 'outlined' | 'text';
   size?: 'sm' | 'md' | 'lg';
   style?: any;
+  fullWidth?: boolean;
 };
 
 export function Button(props: Props) {
@@ -22,6 +23,7 @@ export function Button(props: Props) {
         styles.base,
         styles[props.variant ?? 'filled'],
         styles[props.size ?? 'md'],
+        props.fullWidth && styles.fullWidth,
       )}
     >
       {local.children}

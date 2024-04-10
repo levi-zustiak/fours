@@ -1,12 +1,13 @@
 import { useGame } from '@contexts/GameContext';
 import { Board } from '../Board';
-import { Chat } from '../Chat';
-import { History } from '../History';
-import { Info } from '../Info';
+import { Chat } from './components/Chat';
+import { History } from './components/History';
+import { Info } from './components/Info';
 import styles from './style.module.css';
 import { Show } from 'solid-js';
 import { usePage } from 'inertia-solid';
-import { Modal } from './components/Modal';
+import { Modal } from '../../../../components/Modal';
+import { Button } from '@components/Button';
 
 function Modals() {
   const { state, rematch, accept } = useGame();
@@ -19,7 +20,7 @@ function Modals() {
           <Modal.Content>
             <h3>Game Over</h3>
             <Modal.Actions>
-              <button onClick={rematch}>Rematch?</button>
+              <Button onClick={rematch}>Rematch?</Button>
             </Modal.Actions>
           </Modal.Content>
         </Modal.Portal>

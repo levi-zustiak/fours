@@ -15,4 +15,12 @@ export class AppController {
       props: {},
     });
   }
+
+  @Get('/sandbox')
+  sandbox(@Inertia() inertia: Inertia) {
+    inertia.render({
+      component: '/sandbox',
+      props: {},
+    });
+  }
 }

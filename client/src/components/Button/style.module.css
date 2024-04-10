@@ -1,16 +1,31 @@
 .base {
   border: 2px solid var(--black-main);
-  border-radius: 12px;
-  padding: 8px;
+  border-radius: 8px;
+  padding: 0 12px;
   color: var(--text-inverse);
   font-family: 'Rubik';
-  font-weight: 700;
   font-size: 1rem;
-  /* transition: all 150ms ease-in-out; */
+  transition: all 150ms ease-in-out;
+}
+
+.base:focus {
+  outline-color: var(--black-main);
+  outline-style: solid;
 }
 
 .text {
+  outline-color: var(--background-accent);
   border: none;
+  background: none;
+  color: var(--text-main);
+}
+
+.text:hover {
+  background-color: var(--background-accent);
+}
+
+.text:focus {
+  outline-color: var(--background-accent);
 }
 
 .outlined {
@@ -24,6 +39,7 @@
 }
 
 .filled {
+  border: none;
   background-color: var(--black-main);
 }
 
@@ -32,20 +48,49 @@
 }
 
 .sm {
-  height: 32px;
+  height: 36px;
   min-width: 64px;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 0 12px;
+}
+
+.sm:focus {
+  outline-width: 2px;
+  outline-offset: 2px;
 }
 
 .md {
   height: 48px;
   min-width: 96px;
   font-size: 1rem;
-  border-width: 2px;
+  font-weight: 600;
+  padding: 0 24px;
+  border-width: 3px;
+  outline-offset: 3px;
+  outline-width: 3px;
+}
+
+.md:foucs {
+  outline-offset: 16px;
+  outline-width: 2.5px;
 }
 
 .lg {
   height: 60px;
   min-width: 128px;
   font-size: 1.33rem;
+  font-weight: 700;
+  padding: 0 36px;
+  border-radius: 12px;
   border-width: 3px;
+}
+
+.lg:focus {
+  outline-width: 3px;
+  outline-offset: 3px;
+}
+
+.fullWidth {
+  width: 100%;
 }
