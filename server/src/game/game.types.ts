@@ -19,9 +19,3 @@ export type Coords = {
   row: number;
   col: number;
 };
-
-export type Player = {
-  wins: number;
-  ready: boolean;
-  playingAs?: number;
-} & User;

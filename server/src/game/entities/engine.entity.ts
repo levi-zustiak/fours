@@ -1,15 +1,13 @@
-import { User } from '@prisma/client';
-import { Cell, Player, Position } from './game.types';
+import { Cell, Position } from '../game.types';
+import { Player } from './player.entity';
 
 export class Engine {
-  public players: Array<Player>;
   public board: any;
   public currentPlayer: Position;
   public moveList: Array<Cell>;
   public playing: boolean;
 
-  constructor(players: Player[]) {
-    this.setPlayerPositions(players);
+  constructor() {
     this.currentPlayer = 0;
     this.playing = true;
     this.board = [
@@ -41,21 +39,7 @@ export class Engine {
     this.moveList = [];
   }
 
-  private setPlayerPositions(players: Player[]) {
-    const playingAs =
-      crypto.getRandomValues(new Uint8Array(1))[0] > 127 ? 0 : 1;
-
-    this.players = [
-      { ...players[0], playingAs },
-      { ...players[1], playingAs: 1 - playingAs },
-    ];
-  }
-
-  update(user: User, col: number) {
-    if (!this.validate(user)) {
-      return;
-    }
-
+  public update(col: number) {
     const board = structuredClone(this.board);
     const row = board[col].indexOf(null);
 
@@ -72,26 +56,20 @@ export class Engine {
 
     if (this.checkWin()) {
       this.playing = false;
-
-      // TODO: Figure out how to increment count of wins in the parent context
     } else {
       this.switchPlayer();
     }
   }
 
-  validate(user: User) {
-    const currentPlayer = this.players.find(
-      (player) => player.playingAs === this.currentPlayer,
-    );
-
-    return user.id === currentPlayer.id && this.playing;
+  public validate(player: Player) {
+    return player.playingAs === this.currentPlayer && this.playing;
   }
 
   private switchPlayer() {
     this.currentPlayer = (1 - this.currentPlayer) as Position;
   }
 
-  checkWin() {
+  private checkWin() {
     return (
       this.checkVertical() ||
       this.checkHorizontal() ||
@@ -193,16 +171,4 @@ export class Engine {
   private max(num: number, max: number): number {
     return Math.min(num + 3, max) + 1;
   }
-
-  //   toJSON() {
-  //     return {
-  //       id: this.id,
-  //       players: Object.fromEntries(this.players.entries()),
-  //       spectators: this.spectators,
-  //       stage: this.stage,
-  //       board: this.board,
-  //       currentPlayer: this.currentPlayer,
-  //       moveList: this.moveList,
-  //     };
-  //   }
 }

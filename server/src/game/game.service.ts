@@ -1,16 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Socket } from 'socket.io';
 import { User } from '@prisma/client';
-import { GameStage } from './game.types';
-import { Game } from './game.entity';
+import { Game } from './entities/game.entity';
 
 @Injectable()
 export class GameService {
   private logger: Logger = new Logger('GameService');
   private games = new Map<string, Game>();
-
-  constructor(private eventEmitter: EventEmitter2) {}
 
   public create() {
     // TODO: Check user doesn't have a game already
@@ -42,26 +38,8 @@ export class GameService {
 
     game.ready(user);
 
-    if (game.stage === GameStage.PLAYING) {
-      this.logger.log('Players are ready');
-      game.start();
-    }
-
     return game;
   }
-
-  // There could be a small chance of a race condition here if a player
-  // unreadys up the same time the second player readys up
-  // public unready(user: User, gameId: string) {
-  //   const game = this.get(gameId);
-  //
-  //   if (!game) return;
-  //
-  //   // TODO: Should check that the game has not moved past the "ready up" stage
-  //   game.unready(user);
-  //
-  //   return game;
-  // }
 
   public update(user: User, { gameId, col }) {
     const game = this.games.get(gameId);
@@ -79,7 +57,7 @@ export class GameService {
     // TODO: Check lobby status is still connected
     if (!game || !game.players.some((player) => player.id === user.id)) return;
 
-    game.rematch(user);
+    game.requestRematch(user);
 
     return game;
   }
@@ -89,7 +67,8 @@ export class GameService {
 
     this.logger.log(`${user.name} accepted the rematch`);
 
-    game.accept();
+    // TODO: pass in user
+    game.acceptRematch();
 
     return game;
   }

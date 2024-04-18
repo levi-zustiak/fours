@@ -10,17 +10,17 @@ function Players() {
     <div class={styles.players}>
       <h4
         style={{
-          'background-color': state.engine.players[0].playingAs
+          'background-color': state.players[0].playingAs
             ? 'var(--yellow-main)'
             : 'var(--red-main)',
         }}
       >
         {state.players[0].name}
       </h4>
-      <p>{`${state.engine.players[0].wins} : ${state.engine.players[1].wins}`}</p>
+      <p>{`${state.players[0].wins} : ${state.players[1].wins}`}</p>
       <h4
         style={{
-          'background-color': state.engine.players[1].playingAs
+          'background-color': state.players[1].playingAs
             ? 'var(--yellow-main)'
             : 'var(--red-main)',
         }}
