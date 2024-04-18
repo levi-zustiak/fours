@@ -1,5 +1,3 @@
-import { User } from '@prisma/client';
-
 export enum GameStage {
   WAITING = 'waiting',
   PLAYING = 'playing',

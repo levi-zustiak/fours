@@ -6,8 +6,8 @@ import { Player } from './player.entity';
 
 export class Game {
   public id: string;
-  public players: Array<Player>;
-  public spectators: Array<User>;
+  public players: Player[];
+  public spectators: User[];
   public stage: GameStage;
   public state: { rematch?: { challenger: number; recipient: number } };
   public engine?: Engine;
@@ -17,6 +17,7 @@ export class Game {
     this.players = [];
     this.spectators = [];
     this.stage = GameStage.WAITING;
+    this.state = {};
   }
 
   public join(user: User) {

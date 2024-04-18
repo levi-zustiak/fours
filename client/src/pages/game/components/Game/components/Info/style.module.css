@@ -1,9 +1,20 @@
 .info {
   grid-area: info;
-  border: 2px solid grey;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.players {
-  border: 1px solid red;
+.player {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wins {
+  background-color: var(--background-accent);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 700;
 }

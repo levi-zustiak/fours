@@ -1,9 +1,9 @@
 .container {
-  display: grid;
-  grid-template-areas:
-    'history board chat'
-    'history info chat';
-  grid-template-columns: '500px 1fr 500px';
-  grid-template-rows: 1fr 250px;
+  border: 1px solid red;
+  width: 960px;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
+  justify-self: center;
+  align-self: center;
 }

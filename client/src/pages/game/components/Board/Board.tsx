@@ -56,8 +56,6 @@ export function Board(props) {
       tl.from(ref, { opacity: 0 });
     }
 
-    console.log(state.stage);
-
     switch (state?.stage) {
       case 'waiting':
         console.log('waiting');
