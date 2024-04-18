@@ -1,4 +1,4 @@
-import { Accessor, createSignal } from 'solid-js';
+import { Accessor, createEffect, createSignal, on } from 'solid-js';
 
 type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (
   x: infer R,
@@ -35,6 +35,8 @@ export interface Presence {
 export function createPresence(present: Accessor<boolean>): Presence {
   const [node, setNode] = createSignal<HTMLElement>();
 
+  let prevPresent = present();
+
   const [state, send] = createStateMachine(
     present() ? 'mounted' : 'unmounted',
     {
@@ -51,6 +53,38 @@ export function createPresence(present: Accessor<boolean>): Presence {
       },
     },
   );
+
+  createEffect(
+    on(state, (state) => {
+      // store previousanimation
+      // prevAnimationName = state === 'mounted' ? currentAnimationName : 'none';
+    }),
+  );
+
+  createEffect(
+    on(present, (present) => {
+      if (prevPresent === present) return;
+
+      // get gsap or css animation
+
+      if (present) {
+        send('MOUNT');
+      } else {
+        // check gsap is animating or css animation
+        const isAnimating = null;
+
+        if (prevPresent && isAnimating) {
+          send('ANIMATION_OUT');
+        } else {
+          send('UNMOUNT');
+        }
+      }
+
+      prevPresent = present;
+    }),
+  );
+
+  console.log(state());
 
   return {
     isPresent: () => ['mounted', 'unmountSuspended'].includes(state()),

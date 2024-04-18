@@ -8,9 +8,13 @@
   transition: all 150ms ease-in-out;
 }
 
-.base:focus {
+.base:focus-visible {
   outline-color: var(--black-main);
   outline-style: solid;
+}
+
+.base:active {
+  scale: 0.95;
 }
 
 .text {
@@ -24,7 +28,7 @@
   background-color: var(--background-accent);
 }
 
-.text:focus {
+.text:focus-visible {
   outline-color: var(--background-accent);
 }
 
@@ -55,7 +59,7 @@
   padding: 0 12px;
 }
 
-.sm:focus {
+.sm:focus-visible {
   outline-width: 2px;
   outline-offset: 2px;
 }
@@ -67,13 +71,11 @@
   font-weight: 600;
   padding: 0 24px;
   border-width: 3px;
-  outline-offset: 3px;
-  outline-width: 3px;
 }
 
-.md:foucs {
-  outline-offset: 16px;
-  outline-width: 2.5px;
+.md:focus-visible {
+  outline-offset: 3px;
+  outline-width: 3px;
 }
 
 .lg {

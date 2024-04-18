@@ -3,7 +3,7 @@ import { useModalContext } from './modal-context';
 
 type OverrideProps<Source = {}, Override = {}> = Omit<Source, keyof Override> &
   Override;
-type OverrideComponentProps<T extends ValidComponent, P> = OverrideProps<
+export type OverrideComponentProps<T extends ValidComponent, P> = OverrideProps<
   ComponentProps<T>,
   P
 >;
@@ -18,8 +18,9 @@ export function ModalContent(props: ModalContentProps) {
 
   const context = useModalContext();
 
-  let hasInteractedOutside = false;
-  let hasPointerDownOutside = false;
-
-  return <Show when={context.contentPresence.isPresent}></Show>;
+  return (
+    <Show when={context.contentPresence.isPresent}>
+      <div>{props.children}</div>
+    </Show>
+  );
 }

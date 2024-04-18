@@ -1,6 +1,7 @@
 import { Button } from '@components/Button';
 import { Modal } from '@components/Modal';
 import { TextField } from '@components/TextField';
+import { X } from 'lucide-solid';
 
 const noop = () => undefined;
 
@@ -97,21 +98,24 @@ export function Page() {
           type="password"
         />
       </div>
-      {/* <Modal.Root> */}
-      {/*   <Modal.Portal open={true}> */}
-      {/*     <Modal.Content> */}
-      {/*       <h2>Modal component</h2> */}
-      {/*       <Modal.Actions> */}
-      {/*         <Button onClick={() => undefined} fullWidth> */}
-      {/*           Button */}
-      {/*         </Button> */}
-      {/*         <Button onClick={() => undefined} fullWidth variant="outlined"> */}
-      {/*           Button */}
-      {/*         </Button> */}
-      {/*       </Modal.Actions> */}
-      {/*     </Modal.Content> */}
-      {/*   </Modal.Portal> */}
-      {/* </Modal.Root> */}
+      <Modal.Root open>
+        <Modal.Portal>
+          <Modal.Content>
+            <Modal.CloseButton>
+              <X />
+            </Modal.CloseButton>
+            <h2>Modal component</h2>
+            <div>
+              <Button onClick={() => undefined} fullWidth>
+                Button
+              </Button>
+              <Button onClick={() => undefined} fullWidth variant="outlined">
+                Button
+              </Button>
+            </div>
+          </Modal.Content>
+        </Modal.Portal>
+      </Modal.Root>
     </div>
   );
 }

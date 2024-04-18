@@ -14,8 +14,6 @@ type Props = {
 export function Button(props: Props) {
   const [local, rest] = splitProps(props, ['children']);
 
-  console.log(props);
-
   return (
     <button
       {...rest}
