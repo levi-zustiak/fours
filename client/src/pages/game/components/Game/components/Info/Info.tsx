@@ -1,20 +1,8 @@
 import { useGame } from '@contexts/GameContext';
 import styles from './style.module.css';
 import { usePage } from 'inertia-solid';
-import { Player, Position } from '@/types/game.types';
-
-function Token({ position }: { position: Position }) {
-  return (
-    <svg width="32" height="32">
-      <circle
-        cx="16"
-        cy="16"
-        r="16"
-        fill={position ? 'var(--yellow-main)' : 'var(--red-main)'}
-      />
-    </svg>
-  );
-}
+import { Player } from '@/types/game.types';
+import { clsx } from 'clsx';
 
 export function Info() {
   const { state } = useGame();
@@ -25,16 +13,16 @@ export function Info() {
   const opponent = () =>
     state.players.find((player) => player.id !== user.id) as Player;
 
-  console.log(user, me, opponent);
-
   return (
     <div class={styles.info}>
       <div class={styles.player}>
-        <Token position={me().playingAs} />
+        <div class={clsx(styles.token, styles[me().playingAs])}></div>
         <h3>{me().name}</h3>
       </div>
       <div class={styles.wins}>
-        <p>{`${me().wins} : ${opponent().wins}`}</p>
+        <h4>{me().wins}</h4>
+        <h4>:</h4>
+        <h4>{opponent().wins}</h4>
       </div>
       <div
         class={styles.player}
@@ -42,7 +30,7 @@ export function Info() {
           'flex-direction': 'row-reverse',
         }}
       >
-        <Token position={opponent().playingAs} />
+        <div class={clsx(styles.token, styles[opponent().playingAs])}></div>
         <h3>{opponent().name}</h3>
       </div>
     </div>

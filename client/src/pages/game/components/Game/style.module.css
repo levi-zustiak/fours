@@ -1,5 +1,4 @@
 .container {
-  border: 1px solid red;
   width: 960px;
   display: flex;
   flex-direction: column;

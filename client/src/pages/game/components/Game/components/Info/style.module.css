@@ -12,9 +12,25 @@
 }
 
 .wins {
+  display: flex;
+  gap: 1rem;
   background-color: var(--background-accent);
   border-radius: 8px;
-  padding: 8px;
-  font-size: 16px;
+  padding: 0.75rem 1rem;
+  font-size: 20px;
   font-weight: 700;
+}
+
+.token {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+.0 {
+  background-color: var(--red-main);
+}
+
+.1 {
+  background-color: var(--yellow-main);
 }

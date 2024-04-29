@@ -9,9 +9,12 @@
   --primary-main: #f66d76;
   --primary-accent: #f55761;
   --yellow-main: #ffdb96;
+  --yellow-accent: #ffd179;
+  /* TODO: clean up the unneccessary colors */
   --secondary-main: #f6c76d;
   --secondary-accent: #ffd179;
   --red-main: #f66d76;
+  --red-accent: #ee4646;
   --primary-accent: #f55761;
   --border-main: #222;
   --text-main: var(--black-main);
