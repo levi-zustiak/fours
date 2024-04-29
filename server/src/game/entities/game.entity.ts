@@ -4,6 +4,8 @@ import { Engine } from './engine.entity';
 import { GameStage, Position } from '../game.types';
 import { Player } from './player.entity';
 
+type RematchAction = 'challenge' | 'accept' | 'decline';
+
 export class Game {
   public id: string;
   public players: Player[];
@@ -72,18 +74,29 @@ export class Game {
   }
 
   public requestRematch(user: User) {
-    this.state.rematch = {
-      challenger: user.id,
-      recipient: user.id,
-    };
+    if (this.state.rematch === undefined) {
+      const recipient = this.players.find((player) => player.id !== user.id);
+
+      this.state.rematch = {
+        challenger: user.id,
+        recipient: recipient.id,
+      };
+    }
   }
 
-  public acceptRematch() {
-    // TODO: validate that the acceptor is the recipient
-    delete this.state.rematch;
+  public acceptRematch(user: User) {
+    if (
+      this.state.rematch !== undefined &&
+      user.id === this.state.rematch.recipient
+    ) {
+      delete this.state.rematch;
 
-    this.start();
+      this.start();
+    }
   }
+
+  // TODO: add functionality to cancel the rematch. Can probably just call this from a "leave" function
+  public cancelRematch(user: User) {}
 
   private next(stage: GameStage) {
     switch (stage) {

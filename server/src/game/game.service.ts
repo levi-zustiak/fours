@@ -67,8 +67,7 @@ export class GameService {
 
     this.logger.log(`${user.name} accepted the rematch`);
 
-    // TODO: pass in user
-    game.acceptRematch();
+    game.acceptRematch(user);
 
     return game;
   }
