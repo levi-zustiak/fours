@@ -6,6 +6,7 @@ import { clsx } from 'clsx';
 
 export function Info() {
   const { state } = useGame();
+  // TODO: Fix usePage types
   const { user } = usePage().props;
 
   const me = () =>
