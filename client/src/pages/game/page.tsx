@@ -127,7 +127,17 @@ function Lobby() {
   return (
     <div>
       <pre>{JSON.stringify(state, null, 2)}</pre>
-      <button onClick={ready}>Ready</button>
+      <Show when={state.players.length === 2}>
+        <Button
+          onClick={ready}
+          variant="filled"
+          size="lg"
+          style={{ 'background-color': 'var(--success-main)' }}
+        >
+          Ready
+        </Button>
+      </Show>
+
       {/* <h1 class={styles.heading}>Play</h1>
 
       <Show when={state.players[0]}>
@@ -242,7 +252,7 @@ function Components() {
       <Match when={state.stage === 'waiting'}>
         <Lobby />
       </Match>
-      <Match when={state.stage === 'playing' || state.stage === 'ended'}>
+      <Match when={state.stage === 'playing'}>
         <Game />
       </Match>
     </Switch>

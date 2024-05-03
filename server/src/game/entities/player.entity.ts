@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { Position } from '../game.types';
 
-export class Player implements Omit<User, 'password'> {
+export class Player {
   public id: number;
   public name: string;
   public ready: boolean;

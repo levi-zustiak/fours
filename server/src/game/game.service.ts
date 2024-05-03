@@ -72,6 +72,22 @@ export class GameService {
     return game;
   }
 
+  public cancel(gameId: string) {
+    const game = this.games.get(gameId);
+
+    game.cancelRematch();
+
+    return game;
+  }
+
+  public decline(user: User, gameId: string) {
+    const game = this.games.get(gameId);
+
+    game.declineRematch(user);
+
+    return game;
+  }
+
   public get(gameId: string): Game | undefined {
     const game = this.games.get(gameId);
 

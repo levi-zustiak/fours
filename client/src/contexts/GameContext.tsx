@@ -49,13 +49,13 @@ const GameProvider = (props: any) => {
     socket.emit('update', { gameId: state.id, col });
   };
 
-  const rematch = () => {
-    socket.emit('rematch', { gameId: state.id });
-  };
+  const rematch = () => socket.emit('rematch', { gameId: state.id });
 
-  const accept = () => {
-    socket.emit('accept', { gameId: state.id });
-  };
+  const cancel = () => socket.emit('cancel', { gameId: state.id });
+
+  const accept = () => socket.emit('accept', { gameId: state.id });
+
+  const decline = () => socket.emit('decline', { gameId: state.id });
 
   const sendChat = (message: string) => {
     socket.emit('chat', { gameId: state.id, message });
@@ -86,7 +86,9 @@ const GameProvider = (props: any) => {
     ready,
     play,
     rematch,
+    cancel,
     accept,
+    decline,
     chats,
     sendChat,
   };

@@ -3,15 +3,17 @@ import { v4 } from 'uuid';
 import { Engine } from './engine.entity';
 import { GameStage, Position } from '../game.types';
 import { Player } from './player.entity';
+import { Spectator } from './spectator.entity';
 
-type RematchAction = 'challenge' | 'accept' | 'decline';
-
+// TODO: check user actions are made by players and not spectators
 export class Game {
   public id: string;
   public players: Player[];
-  public spectators: User[];
+  public spectators: Spectator[];
   public stage: GameStage;
-  public state: { rematch?: { challenger: number; recipient: number } };
+  public state: {
+    rematch?: { challenger: number; recipient: number; pending: boolean };
+  };
   public engine?: Engine;
 
   constructor() {
@@ -26,12 +28,16 @@ export class Game {
     // TODO: Check user is not already in the player list
     this.players.length < 2
       ? this.players.push(new Player(user))
-      : this.spectators.push(user);
+      : this.spectators.push(new Spectator(user));
   }
 
   public leave(user: User) {
     this.players.filter((player) => player.id === user.id);
     this.spectators.filter((spectator) => spectator.id === user.id);
+
+    if (this.isPlayer(user)) {
+      this.cancelRematch();
+    }
   }
 
   public ready(user: User) {
@@ -80,6 +86,7 @@ export class Game {
       this.state.rematch = {
         challenger: user.id,
         recipient: recipient.id,
+        pending: true,
       };
     }
   }
@@ -95,8 +102,21 @@ export class Game {
     }
   }
 
-  // TODO: add functionality to cancel the rematch. Can probably just call this from a "leave" function
-  public cancelRematch(user: User) {}
+  public declineRematch(user: User) {
+    console.log('decline rematch');
+    if (
+      this.state.rematch !== undefined &&
+      user.id === this.state.rematch.recipient
+    ) {
+      this.state.rematch.pending = false;
+    }
+  }
+
+  // TODO: possibly update this to provide a state value for reason instead of just deleting
+  public cancelRematch() {
+    console.log('decline rematch');
+    delete this.state.rematch;
+  }
 
   private next(stage: GameStage) {
     switch (stage) {
@@ -123,5 +143,9 @@ export class Game {
     }
 
     return player;
+  }
+
+  private isPlayer(user: User) {
+    return this.getPlayer(user) instanceof Player;
   }
 }

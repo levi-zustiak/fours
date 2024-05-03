@@ -85,12 +85,32 @@ export class GameGateway
     this.server.to(game.id).emit('update', { game });
   }
 
+  @SubscribeMessage('cancel')
+  cancel(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { gameId }: { gameId: string },
+  ) {
+    const game = this.gameSvc.cancel(gameId);
+
+    this.server.to(game.id).emit('update', { game });
+  }
+
   @SubscribeMessage('accept')
   accept(
     @ConnectedSocket() client: Socket,
     @MessageBody() { gameId }: { gameId: string },
   ) {
     const game = this.gameSvc.accept(client.data.user, gameId);
+
+    this.server.to(game.id).emit('update', { game });
+  }
+
+  @SubscribeMessage('decline')
+  decline(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() { gameId }: { gameId: string },
+  ) {
+    const game = this.gameSvc.decline(client.data.user, gameId);
 
     this.server.to(game.id).emit('update', { game });
   }

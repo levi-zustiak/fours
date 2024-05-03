@@ -27,8 +27,10 @@ function Modal(props) {
 }
 
 function Modals() {
-  const { state, rematch, accept } = useGame();
+  const { state, rematch, cancel, accept, decline } = useGame();
   const { user } = usePage().props;
+
+  console.log(state.state.rematch);
 
   return (
     <>
@@ -44,12 +46,29 @@ function Modals() {
       <Show when={state.state.rematch?.recipient === user.id}>
         <Modal title="Rematch?">
           <Button onClick={accept}>Accept</Button>
-          <Button onClick={() => undefined}>Leave</Button>
+          <Button onClick={decline}>Decline</Button>
         </Modal>
       </Show>
-      <Show when={state.state.rematch?.challenger === user.id}>
+      <Show
+        when={
+          state.state.rematch?.challenger === user.id &&
+          state.state.rematch?.pending
+        }
+      >
         <Modal title="Waiting">
-          <Button onClick={() => undefined}>Cancel</Button>
+          <Button onClick={cancel}>Cancel</Button>
+          <Button onClick={() => undefined} variant="outlined">
+            Leave
+          </Button>
+        </Modal>
+      </Show>
+      <Show
+        when={
+          state.state.rematch?.challenger === user.id &&
+          !state.state.rematch?.pending
+        }
+      >
+        <Modal title="Declined">
           <Button onClick={() => undefined} variant="outlined">
             Leave
           </Button>
