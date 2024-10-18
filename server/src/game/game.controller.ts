@@ -48,7 +48,7 @@ export class GameController {
     const game = this.gameSvc.join(req.user, gameId);
 
     inertia.render({
-      component: '/game',
+      component: '/app/game',
       props: {
         game,
         user: req.user,
